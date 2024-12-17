@@ -1,37 +1,37 @@
-import './globals.css';
+import "./globals.css";
 
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
-import { Header } from '@/components/ui/header';
-import { Providers } from '@/providers/Providers';
+import { Header } from "@/components/ui/header";
+import { Providers } from "@/providers/Providers";
 
 const frame = {
-  version: 'next',
+  version: "next",
   imageUrl: `https://rewards.warpcast.com/og.png`,
   button: {
-    title: 'Launch',
+    title: "Launch",
     action: {
-      type: 'launch_frame',
-      name: 'Warpcast Rewards',
-      url: 'https://rewards.warpcast.com',
+      type: "launch_frame",
+      name: "Warpcast Rewards",
+      url: "https://rewards.warpcast.com",
       iconImageUrl: `https://rewards.warpcast.com/splash.png`,
       splashImageUrl: `https://rewards.warpcast.com/splash.png`,
-      splashBackgroundColor: '#000000',
+      splashBackgroundColor: "#000000",
     },
   },
 };
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    metadataBase: new URL('https://rewards.warpcast.com'),
-    title: 'Warpcast Rewards',
+    metadataBase: new URL("https://rewards.warpcast.com"),
+    title: "Warpcast Rewards",
     openGraph: {
-      title: 'Warpcast',
-      description: 'Warpcast Rewards',
+      title: "Warpcast",
+      description: "Warpcast Rewards",
       images: `https://rewards.warpcast.com/og.png`,
     },
     other: {
-      'fc:frame': JSON.stringify(frame),
+      "fc:frame": JSON.stringify(frame),
     },
   };
 }
@@ -54,10 +54,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased scrollbar-vert">
-        <Providers>
-          <Header />
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

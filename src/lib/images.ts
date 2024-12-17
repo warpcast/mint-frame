@@ -10,6 +10,7 @@ function applyCloudflarePath({
   url: string | undefined;
   width: number;
 }) {
+  return url;
   if (!url) {
     return undefined;
   }
