@@ -1,0 +1,9 @@
+.dockerignore
+.git
+.gitignore
+.github
+deploy.yml
+deploy-docker-compose.yml
+ec2-first-boot.sh
+Dockerfile
+README.md

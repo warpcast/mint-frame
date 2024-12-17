@@ -1,0 +1,65 @@
+name: Build
+description: Build application Docker image
+
+inputs:
+  dockerhub-user:
+    required: true
+  dockerhub-password:
+    required: true
+  image-tag:
+    required: false
+    default: build:${{ github.sha }}
+  depot:
+    required: false
+    default: false
+  depot-project-id:
+    required: false
+  dockerfile:
+    required: false
+    default: ./Dockerfile
+  context:
+    required: false
+    default: .
+  push:
+    required: false
+    default: false
+  platforms:
+    required: false
+    default: 'linux/arm64'
+
+outputs:
+  image-tag:
+    value: ${{ steps.image-tag.outputs.image-tag }}
+
+runs:
+  using: composite
+
+  steps:
+    - name: Output Docker image tag
+      id: image-tag
+      env:
+        IMAGE_TAG: ${{ inputs.image-tag }}
+      run: echo "image-tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - if: ${{ inputs.depot == 'true' }}
+      uses: depot/use-action@v1
+      with:
+        project: ${{ inputs.depot-project-id }}
+
+    - if: ${{ inputs.depot != 'true' }}
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log in to Docker Hub so we don't get rate limited
+      uses: docker/login-action@v3
+      with:
+        username: ${{ inputs.dockerhub-user }}
+        password: ${{ inputs.dockerhub-password }}
+
+    - uses: docker/build-push-action@v6
+      with:
+        context: ${{ inputs.context }}
+        file: ${{ inputs.dockerfile }}
+        platforms: ${{ inputs.platforms }}
+        tags: ${{ steps.image-tag.outputs.image-tag }}
+        push: ${{ inputs.push }}

@@ -1,0 +1,70 @@
+# Name of the project.
+# DON'T change this -- it will rename + recreate all resources (downtime)
+project: scores-frame
+region: us-east-1
+
+network:
+  id: vpc-0f6f9a87c6da89cc3 # VPC to deploy the service within
+  subnets:
+    public:
+      - subnet-0c692bcb8e0b04af0 # public-1b
+      - subnet-07ac4939a1d7db9c1 # public-1d
+      - subnet-0305c0d827e803272 # public-1f
+    private:
+      - subnet-09d8bb56d08618935 # private-1b
+      - subnet-0fdd713886476d21c # private-1d
+      - subnet-0d4f99e3a3569ec11 # private-1f
+
+x-shared-pod-options: &shared-pod-options
+  image: ami-056c76de488ba5820 # 64-bit ARM Amazon Linux 2023 with Docker Compose already installed
+  sshUser: ec2-user
+  compose: deploy-docker-compose.yml
+  initScript: ec2-first-boot.sh
+  deploy:
+    replaceWith: new-instances
+    shutdownTimeout: 10
+    instanceRefreshTimeout: 600 # 10 minutes
+
+pods:
+  app:
+    <<: *shared-pod-options
+    instanceType: t4g.large # 2 vCPU (burst), 8GiB, ARM, up to 5 Gbit
+    environment:
+      STACK_DOCKER_IMAGE: # Provided by deployment process after image is built
+      HEALTHCHECK_CMD: "curl -f http://localhost:3000"
+    autoscaling:
+      healthCheckGracePeriod: 180 # Sometimes EC2 instances take a while to start
+      minHealthyPercentage: 100
+      maxHealthyPercentage: 200
+      minHealthyInstances: 1
+      onDemandBaseCapacity: 1
+      onDemandPercentageAboveBaseCapacity: 50
+    loadBalancers:
+      app:
+        type: application
+        public: true
+        idleTimeout: 25
+    endpoints:
+      app:
+        loadBalancer:
+          name: app
+          protocol: HTTPS
+          port: 443
+          cert: warpcast.com
+        public: false # Only load balancer is public
+        target:
+          port: 3000
+          protocol: HTTP
+          deregistration:
+            delay: 30
+          healthCheck:
+            path: "/"
+            healthyThreshold: 2
+            unhealthyThreshold: 2
+            timeout: 4
+            interval: 5
+
+# Defines the _names_ of secrets (not values!) and which pods have access to them
+# Values for each secret must be set manually in AWS Secrets Manager.
+secrets:
+  DD_API_KEY:

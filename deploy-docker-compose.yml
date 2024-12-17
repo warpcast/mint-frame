@@ -1,0 +1,111 @@
+# Docker Compose configuration shared by all pods for the backend.
+#
+# If you need to tweak something for a specific pod, reference it as an
+# environment variable here and set that environment variable explicitly for
+# each pod in deploy.yml
+
+x-shared-labels: &shared-labels
+  com.datadoghq.tags.pod: ${POD_NAME}
+  com.datadoghq.tags.service: scores-frame-${POD_NAME}
+
+# Blank values implies values are inherited from the environment
+x-shared-env-vars: &shared-env-vars
+  TINI_VERBOSITY: 3
+  ENVIRONMENT: prod
+  # Datadog SDK configuration. Agent configuration is further below
+  DD_API_KEY:
+  DD_ENV: prod
+  DD_VERSION: ${RELEASE}
+
+services:
+  app:
+    depends_on:
+      - datadog # Make sure agent is running so all stats+logs are collected
+    image: ${STACK_DOCKER_IMAGE:-dummy-value-for-linting}
+    init: true
+    environment:
+      <<: *shared-env-vars
+      DD_SERVICE: scores-frame-${POD_NAME}
+    labels:
+      <<: *shared-labels
+    network_mode: host
+    restart: always
+    volumes:
+      - /var/run/datadog/:/var/run/datadog/ # Unix socket
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    healthcheck:
+      test: ["CMD-SHELL", "${HEALTHCHECK_CMD}"]
+      start_period: 15s # Only affects whether Docker determines the container is healthy, does not stop container if unhealthy
+      interval: 10s
+      timeout: 10s
+      retries: 3
+
+  datadog:
+    image: public.ecr.aws/datadog/agent:cached
+    cgroup: host
+    pid: host
+    network_mode: host
+    restart: always
+    environment:
+      DD_LOG_LEVEL: "WARN" # For agent's logs only
+      DD_ENV: prod
+      DD_SERVICE: backend-${POD_NAME}
+      DD_VERSION: ${RELEASE}
+      DD_API_KEY: ${DD_API_KEY}
+      DD_HOSTNAME: ${INSTANCE_ID}.merkle.zone
+      DD_LOGS_ENABLED: "true"
+      DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "true"
+      DD_PROCESS_CONFIG_PROCESS_COLLECTION_ENABLED: "true"
+      DD_PROCESS_AGENT_ENABLED: "true"
+      DD_SYSTEM_PROBE_NETWORK_ENABLED: "true"
+      DD_DOGSTATSD_TAG_CARDINALITY: "low"
+      DD_DOGSTATSD_NON_LOCAL_TRAFFIC: "true"
+      DD_DOGSTATSD_ORIGIN_DETECTION: "true"
+      DD_DOGSTATSD_SOCKET: /var/run/datadog/dsd.socket
+      DD_CONTAINER_LABELS_AS_TAGS: '{
+        "com.docker.compose.service": "container",
+        "com.datadoghq.tags.pod": "pod"
+      }'
+      DD_HEALTH_PORT: 5555
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - SYS_PTRACE
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+      - IPC_LOCK
+      - CHOWN
+    security_opt:
+      - apparmor:unconfined
+    labels:
+      <<: *shared-labels
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /proc/:/host/proc/:ro
+      - /opt/datadog-agent/run:/opt/datadog-agent/run:rw
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /var/run/datadog/:/var/run/datadog/
+      - /sys/kernel/debug:/sys/kernel/debug
+      - /etc/group:/etc/group:ro
+      - /usr/lib/os-release:/usr/lib/os-release:ro
+      - /sys/kernel/security:/host/sys/kernel/security:ro
+
+  # Watches container health status and restarts containers if failed
+  # (Docker doesn't do this out of the box, it only restarts if process exits)
+  autoheal:
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: all
+      AUTOHEAL_START_PERIOD: 120 # Give service time to start up (2 mins)
+    image: willfarrell/autoheal:cached
+    network_mode: none
+    restart: always
+    stop_signal: SIGKILL # autoheal doesn't handle signals correctly, so just kill it
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
