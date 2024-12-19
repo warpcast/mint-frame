@@ -29,18 +29,18 @@ export function MintSuccessSheet({
         <DrawerTitle className="sr-only">Collection Successful</DrawerTitle>
 
         <div className="flex flex-col items-center pt-4 pb-1">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <CheckCircle2
               className="text-[#43B748]"
               strokeWidth={2}
               size={24}
             />
-            <span className="text-2xl">Collected</span>
+            <span className="text-2xl font-semibold">Collected</span>
           </div>
         </div>
 
         <div className="max-w-[272px] mx-auto w-full">
-          <div className="bg-card rounded-xl p-3 shadow-lg mb-8">
+          <div className="bg-mat rounded-xl p-2 shadow mb-10">
             <div className="relative aspect-square w-full rounded-lg overflow-hidden">
               <Image
                 src={imageUrl}
@@ -54,10 +54,10 @@ export function MintSuccessSheet({
 
         <div className="px-4 pb-[env(safe-area-inset-bottom)] mb-8">
           <div className="flex gap-3">
-            <Button variant="outline" className="flex-1" onClick={onClose}>
+            <Button variant="secondary" className="flex-1" onClick={onClose}>
               Done
             </Button>
-            <Button variant="secondary" className="flex-1">
+            <Button variant="default" className="flex-1">
               Share
             </Button>
           </div>

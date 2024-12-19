@@ -8,14 +8,14 @@ const frame = {
   version: "next",
   imageUrl: `https://wc-featured-mint.vercel.app/api/og`,
   button: {
-    title: "Launch",
+    title: "Collect",
     action: {
       type: "launch_frame",
       name: "Featured Mint",
       url: "https://wc-featured-mint.vercel.app/",
       iconImageUrl: `https://wc-featured-mint.vercel.app/splash.png`,
       splashImageUrl: `https://wc-featured-mint.vercel.app/splash.png`,
-      splashBackgroundColor: "#000000",
+      splashBackgroundColor: "#ffffff",
     },
   },
 };
@@ -52,7 +52,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased scrollbar-vert">
+      <body className="antialiased scrollbar-vert Text/Faint">
         <Providers>{children}</Providers>
       </body>
     </html>

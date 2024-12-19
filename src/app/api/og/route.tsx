@@ -57,7 +57,6 @@ export async function GET(req: NextRequest) {
           }}
         >
           {/* Background Image */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageUrl}
             alt={name}
@@ -79,7 +78,7 @@ export async function GET(req: NextRequest) {
               right: "24px",
               background: "rgba(0, 0, 0, 0.5)",
               display: "flex",
-              padding: "6px 18px",
+              padding: "12px 24px",
               alignItems: "center",
               gap: "12px",
               borderRadius: "999px",

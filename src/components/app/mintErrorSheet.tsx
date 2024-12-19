@@ -6,7 +6,7 @@ import {
   CopyIcon,
   XCircle,
 } from "lucide-react";
-import { useCallback,useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +27,7 @@ export function MintErrorSheet({
   isOpen,
   onClose,
   error,
-}: Omit<MintErrorSheetProps, 'onCloseFrame'>) {
+}: Omit<MintErrorSheetProps, "onCloseFrame">) {
   const [showDetails, setShowDetails] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -43,7 +43,7 @@ export function MintErrorSheet({
 
   return (
     <Drawer open={isOpen} onClose={onClose}>
-      <DrawerOverlay className="!bg-black/30 backdrop-blur-[7.5px]" />
+      <DrawerOverlay className="backdrop-blur-[7.5px]" />
       <DrawerContent className="bg-card [&>svg]:hidden">
         <DrawerTitle className="sr-only">Failed</DrawerTitle>
 
@@ -55,10 +55,10 @@ export function MintErrorSheet({
         </div>
 
         <div className="p-4">
-          <p className="text-center text-muted">Something went wrong.</p>
+          <p className="text-center">Something went wrong.</p>
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="w-full flex items-center justify-center gap-1 text-primary"
+            className="w-full flex items-center justify-center gap-1 text-action-foreground"
           >
             {showDetails ? "Hide" : "Show"} error
             {showDetails ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -74,7 +74,7 @@ export function MintErrorSheet({
           >
             <pre
               onClick={handleCopy}
-              className="text-xs text-muted whitespace-pre-wrap break-words bg-background/50 p-4 rounded-lg relative cursor-pointer group mt-4"
+              className="text-xs text-muted whitespace-pre-wrap break-words bg-well p-4 rounded-lg relative cursor-pointer group mt-4"
             >
               <div className="absolute right-2 top-2 opacity-50 group-hover:opacity-100 transition-opacity">
                 {copied ? (
@@ -90,11 +90,11 @@ export function MintErrorSheet({
 
         <div className="px-4 pb-[env(safe-area-inset-bottom)] mb-8">
           <div className="flex gap-3">
-            <Button variant="outline" className="flex-1" onClick={onClose}>
+            <Button variant="secondary" className="flex-1" onClick={onClose}>
               Back
             </Button>
             <Button
-              variant="secondary"
+              variant="default"
               className="flex-1"
               onClick={handleCloseFrame}
             >

@@ -8,10 +8,10 @@
     "version": "1",
     "name": "Featured Mint",
     "imageUrl": "https://wc-featured-mint.vercel.app/api/og",
-    "buttonTitle": "Launch",
+    "buttonTitle": "Collect",
     "iconUrl": "https://wc-featured-mint.vercel.app/app.png",
     "splashImageUrl": "https://wc-featured-mint.vercel.app/logo.png",
-    "splashBackgroundColor": "#000000",
+    "splashBackgroundColor": "#ffffff",
     "homeUrl": "https://wc-featured-mint.vercel.app/"
   }
 }

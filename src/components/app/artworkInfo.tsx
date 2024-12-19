@@ -34,8 +34,8 @@ export function ArtworkInfo({
           <h1 className="text-xl font-bold">{name}</h1>
           <div className="flex flex-row items-center gap-1">
             <div className="flex items-center gap-1">
-              <span className="text-sm text-muted/60">by</span>
-              <Avatar className="h-4 w-4">
+              <span className="text-sm text-muted">by</span>
+              <Avatar className="h-4 w-4 bg-secondary rounded-full">
                 <AvatarImage
                   src={creator.pfp?.url}
                   alt={creator.displayName}
@@ -43,18 +43,18 @@ export function ArtworkInfo({
                 />
               </Avatar>
               <span
-                className="text-sm text-primary hover:underline cursor-pointer"
+                className="text-sm text-primary-foreground hover:underline cursor-pointer"
                 onClick={handleUsernameClick}
               >
                 {creator.username}
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <span className="text-sm text-muted/60">on</span>
-              <Avatar className="h-4 w-4">
-                <AvatarImage src="/base-logo.png" alt="Base" width={16} />
+              <span className="text-sm text-muted">on</span>
+              <Avatar className="h-4 w-4 bg-secondary rounded-full">
+                <AvatarImage src="https://wc-featured-mint.vercel.app/base-logo.png" alt="Base" width={16} />
               </Avatar>
-              <span className="text-sm text-muted">Base</span>
+              <span className="text-sm">Base</span>
             </div>
           </div>
         </div>
@@ -63,7 +63,7 @@ export function ArtworkInfo({
         </Button>
       </div>
 
-      <p className="text-sm text-muted mb-4">{description}</p>
+      <p className="text-sm mb-4">{description}</p>
     </div>
   );
 }

@@ -4,25 +4,52 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 210 2.7% 14.5%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 255 43% 58%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 256 29.3% 38.8%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 225 9.1% 65.5%;
-    --muted-foreground: 225 9.1% 65.5%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --action: 277 45% 15.7%;
-    --action-foreground: 284 100% 67.5%;
-    --border: 240 2% 23%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 10% 3.9%;
+    --background: #FFFFFF;
+    --foreground: #24292E;
+    --card: #FFFFFF;
+    --mat: #ffffff;
+    --well: #F3F3F3;
+    --popover: #FFFFFF;
+    --popover-foreground: #24292E;
+    --primary: #DBD4FF;
+    --primary-foreground: #7C65C1;
+    --secondary: #F3F3F3;
+    --secondary-foreground: #24292E;
+    --muted: #8B99A4;
+    --muted-foreground: #8B99A4;
+    --destructive: #E11D48;
+    --destructive-foreground: #FAFAFA;
+    --action: #F2E5FF;
+    --action-foreground: #7C65C1;
+    --border: #F3F3F3;
+    --input: #F3F3F3;
+    --ring: #A5A5A9;
     --radius: 1rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #242426;
+      --foreground: #FFFFFF;
+      --card: #242426;
+      --mat: rgba(52, 41, 66, 0.50);
+      --well: rgba(0, 0, 0, 0.10);
+      --popover: #242426;
+      --popover-foreground: #FFFFFF;
+      --primary: #342942;
+      --primary-foreground: #FFFFFF;
+      --secondary: #242426;
+      --secondary-foreground: #FAFAFA;
+      --muted: #7C8293;
+      --muted-foreground: #7C8293;
+      --destructive: #7D1A2C;
+      --destructive-foreground: #FAFAFA;
+      --action: #2A1F33;
+      --action-foreground: #7C65C1;
+      --border: #242426;
+      --input: #3f3042;
+      --ring: #09090B;
+    }
   }
 }
 
