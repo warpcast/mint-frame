@@ -20,19 +20,19 @@ function mergeIntoDefaultOptions<T>({
 
 // Adapted from https://github.com/sindresorhus/is-network-error/tree/main
 const networkErrorMessages = new Set([
-  'Failed to fetch', // Chrome
-  'NetworkError when attempting to fetch resource.', // Firefox
-  'The Internet connection appears to be offline.', // Safari 16
-  'Load failed', // Safari 17+
-  'Network request failed', // `cross-fetch`
+  "Failed to fetch", // Chrome
+  "NetworkError when attempting to fetch resource.", // Firefox
+  "The Internet connection appears to be offline.", // Safari 16
+  "Load failed", // Safari 17+
+  "Network request failed", // `cross-fetch`
 ]);
 
 function isNetworkError(error: unknown) {
   const isValid =
     error &&
     isError(error) &&
-    error.name === 'TypeError' &&
-    typeof error.message === 'string';
+    error.name === "TypeError" &&
+    typeof error.message === "string";
 
   if (!isValid) {
     return false;
@@ -40,7 +40,7 @@ function isNetworkError(error: unknown) {
 
   // We do an extra check for Safari 17+ as it has a very generic error message.
   // Network errors in Safari have no stack.
-  if (error.message === 'Load failed') {
+  if (error.message === "Load failed") {
     return error.stack === undefined;
   }
 
@@ -115,7 +115,7 @@ export class UnhandledFetchError extends FarcasterError {
 
   constructor(options: FarcasterErrorOptions<FetchErrorOptions>) {
     super(options.message, options);
-    this.name = 'Farcaster API Error';
+    this.name = "Farcaster API Error";
     this.absoluteUrl = options.absoluteUrl;
     this.body = options.body;
     this.endpointName = options.endpointName;
@@ -154,7 +154,7 @@ type RequestRelativeUrl = `/${string}`;
 
 type RequestHeaders = Record<string, string>;
 
-type RequestMethod = 'GET' | 'PATCH' | 'POST' | 'PUT' | 'DELETE';
+type RequestMethod = "GET" | "PATCH" | "POST" | "PUT" | "DELETE";
 
 type RequestParams = Record<
   string,
@@ -165,11 +165,11 @@ type RequestParams = Record<
 type RequestData = any;
 
 type EndpointName =
-  | 'getCreatorRewardsForUser'
-  | 'getCreatorRewardsLeaderboard'
-  | 'getCreatorRewardsMetadata'
-  | 'getCreatorRewardsEarningsHistory'
-  | 'getCreatorRewardsPeriodSummary';
+  | "getCreatorRewardsForUser"
+  | "getCreatorRewardsLeaderboard"
+  | "getCreatorRewardsMetadata"
+  | "getCreatorRewardsEarningsHistory"
+  | "getCreatorRewardsPeriodSummary";
 
 type Fetcher = typeof fetch;
 
@@ -229,8 +229,8 @@ export interface FetchOptions {
   readonly timeout?: number;
 }
 
-type FetchOptionsWithoutMethod = Omit<FetchOptions, 'method'>;
-type FetchOptionsWithoutMethodOrBody = Omit<FetchOptionsWithoutMethod, 'body'>;
+type FetchOptionsWithoutMethod = Omit<FetchOptions, "method">;
+type FetchOptionsWithoutMethodOrBody = Omit<FetchOptionsWithoutMethod, "body">;
 
 type MutateFetchOptions = FetchOptionsWithoutMethod & {
   retryLimit?: number;
@@ -247,7 +247,7 @@ export interface FetchResponse<T> {
   readonly status: number;
 }
 
-const defaultBaseUrl = 'https://client.warpcast.com';
+const defaultBaseUrl = "https://client.warpcast.com";
 const defaultReadTimeout = 20 * 1000;
 const defaultMutateTimeout = 20 * 1000;
 
@@ -320,11 +320,11 @@ abstract class AbstractWarpcastApiClient {
       : undefined;
 
     this.defaultHeaders = {
-      'Content-Type': 'application/json; charset=utf-8',
+      "Content-Type": "application/json; charset=utf-8",
     };
 
     for (const key in this.defaultHeaders) {
-      if (this.defaultHeaders[key] === '') {
+      if (this.defaultHeaders[key] === "") {
         delete this.defaultHeaders[key];
       }
     }
@@ -344,25 +344,25 @@ abstract class AbstractWarpcastApiClient {
       method,
       params,
       timeout,
-    }: FetchOptions,
+    }: FetchOptions
   ): Promise<FetchResponse<T>> {
     let response: Response | undefined;
     let responseData: T | undefined;
 
     const stringifiedParams =
-      typeof params !== 'undefined'
+      typeof params !== "undefined"
         ? new URLSearchParams(
             Object.entries(params).flatMap(([key, value]) =>
               Array.isArray(value)
                 ? value.map((v) => [key, String(v)])
                 : value !== null
                   ? [[key, String(value)]]
-                  : [],
-            ),
+                  : []
+            )
           ).toString()
-        : '';
+        : "";
     const url = `${baseUrl || this.options.baseUrl}${relativeUrl}${
-      stringifiedParams ? `?${stringifiedParams}` : ''
+      stringifiedParams ? `?${stringifiedParams}` : ""
     }`;
 
     const headers = {
@@ -382,7 +382,7 @@ abstract class AbstractWarpcastApiClient {
           return timeout;
         }
 
-        if (method === 'GET') {
+        if (method === "GET") {
           return this.options.readTimeout === undefined
             ? defaultReadTimeout
             : this.options.readTimeout;
@@ -413,7 +413,7 @@ abstract class AbstractWarpcastApiClient {
           ? originalError.message
           : originalError
             ? String(originalError)
-            : 'Farcaster API Client experienced an unexpected error.',
+            : "Farcaster API Client experienced an unexpected error.",
         isNetworkError: isNetworkError(originalError),
         method,
         relativeUrl,
@@ -441,10 +441,10 @@ abstract class AbstractWarpcastApiClient {
       if (isOffline) {
         throw new UnhandledFetchError(
           buildErrorParams({
-            originalError: 'Offline',
+            originalError: "Offline",
             isHandled: false,
             isOffline,
-          }),
+          })
         );
       }
     }
@@ -470,7 +470,7 @@ abstract class AbstractWarpcastApiClient {
 
       if (!resolvedFetch) {
         throw new Error(
-          'Failed to find a resolved fetch method to make requests',
+          "Failed to find a resolved fetch method to make requests"
         );
       }
 
@@ -488,10 +488,10 @@ abstract class AbstractWarpcastApiClient {
       });
 
       const contentType = (
-        response.headers.get('content-type') ||
-        'application/json; charset=utf-8'
+        response.headers.get("content-type") ||
+        "application/json; charset=utf-8"
       ).toLowerCase();
-      const isJson = contentType.includes('json');
+      const isJson = contentType.includes("json");
       const responseData: T = isJson
         ? await response.json()
         : await response.text();
@@ -500,7 +500,7 @@ abstract class AbstractWarpcastApiClient {
         const body = responseData as unknown as ApiErrorResponse;
         const message = `${endpointName} ${response.status} - ${body.errors
           .map((e) => e.message)
-          .join(',')}`;
+          .join(",")}`;
         const handledError = new HandledFetchError({
           ...buildErrorParams({ originalError: message, isHandled: true }),
           responseData: body,
@@ -521,7 +521,7 @@ abstract class AbstractWarpcastApiClient {
       return { data: responseData, status: response.status };
     } catch (e) {
       const unhandledError = new UnhandledFetchError(
-        buildErrorParams({ originalError: e, isHandled: false }),
+        buildErrorParams({ originalError: e, isHandled: false })
       );
 
       if (this.options.onError) {
@@ -544,66 +544,66 @@ abstract class AbstractWarpcastApiClient {
 
   protected async authedGet<T>(
     url: RequestRelativeUrl,
-    { headers, ...options }: GetOptions,
+    { headers, ...options }: GetOptions
   ) {
     return this.fetch<T>(url, {
       ...options,
-      method: 'GET',
+      method: "GET",
       headers: await this.authorize(headers),
     });
   }
 
   protected async get<T>(url: RequestRelativeUrl, options: GetOptions) {
-    return this.fetch<T>(url, { ...options, method: 'GET' });
+    return this.fetch<T>(url, { ...options, method: "GET" });
   }
 
   protected async patch<T>(
     url: RequestRelativeUrl,
-    { headers, ...options }: PatchOptions,
+    { headers, ...options }: PatchOptions
   ) {
     return this.fetch<T>(url, {
       ...options,
-      method: 'PATCH',
+      method: "PATCH",
       headers: await this.authorize(headers, true),
     });
   }
 
   protected async post<T>(
     url: RequestRelativeUrl,
-    { headers, ...options }: PostOptions,
+    { headers, ...options }: PostOptions
   ) {
     return this.fetch<T>(url, {
       ...options,
-      method: 'POST',
+      method: "POST",
       headers: await this.authorize(headers, true),
     });
   }
 
   protected async put<T>(
     url: RequestRelativeUrl,
-    { headers, ...options }: PutOptions,
+    { headers, ...options }: PutOptions
   ) {
     return this.fetch<T>(url, {
       ...options,
-      method: 'PUT',
+      method: "PUT",
       headers: await this.authorize(headers, true),
     });
   }
 
   protected async delete<T>(
     url: RequestRelativeUrl,
-    { headers, ...options }: DeleteOptions,
+    { headers, ...options }: DeleteOptions
   ) {
     return this.fetch<T>(url, {
       ...options,
-      method: 'DELETE',
+      method: "DELETE",
       headers: await this.authorize(headers, true),
     });
   }
 
   protected async authorize(
     originalHeaders: RequestHeaders = {},
-    idempotent = false,
+    idempotent = false
   ) {
     let { Authorization } = originalHeaders;
 
@@ -617,7 +617,7 @@ abstract class AbstractWarpcastApiClient {
 
     const allHeaders: RequestHeaders = { ...originalHeaders, Authorization };
     if (idempotent) {
-      allHeaders['Idempotency-Key'] = generateIdempotencyKey();
+      allHeaders["Idempotency-Key"] = generateIdempotencyKey();
     }
     return allHeaders;
   }
@@ -643,7 +643,7 @@ type ApiProfile = {
   };
 };
 
-interface ApiUser {
+export interface ApiUser {
   fid: ApiFid;
   username?: ApiFname;
   displayName: ApiDisplayName;
@@ -763,22 +763,145 @@ export type ApiGetCreatorRewardsPeriodSummary200Response = {
   };
 };
 
+export type ApiChain = "base";
+
+export type ApiHexString = `0x${string}`;
+
+export type ApiFeaturedMint = {
+  name: string;
+  imageUrl: string;
+  description: string;
+  creator: ApiUser;
+  mint: {
+    totalMinted: number;
+    maxPerWallet: number;
+    priceEth: string;
+    startsAt: number;
+    endsAt: number | null;
+    data: {
+      from: ApiHexString;
+      to: ApiHexString;
+      data: ApiHexString;
+      value: ApiHexString;
+    };
+  };
+  chain: ApiChain;
+};
+
+export type ApiGetFeaturedMint200Response = {
+  result: {
+    mint: ApiFeaturedMint;
+  };
+};
+
+const STUB_RESPONSES = [
+  // Original stub
+  {
+    data: {
+      result: {
+        mint: {
+          name: "Frostbitten Playground",
+          imageUrl: "/placeholder-nft.png",
+          description:
+            "Playgrounds meet Lord of the Flies, AI collaboration by YEDAI 2024.",
+          creator: {
+            fid: 1,
+            username: "yedai",
+            displayName: "YEDAI",
+            pfp: {
+              url: "/placeholder-artist.png",
+            },
+            profile: {
+              bio: {
+                text: "AI Art Collective",
+              },
+            },
+            followerCount: 1000,
+            followingCount: 100,
+          },
+          mint: {
+            totalMinted: 12,
+            maxPerWallet: 2,
+            priceEth: "0.04",
+            startsAt: Date.now() - 60 * 60 * 1000,
+            endsAt: Date.now() + 60 * 60 * 1000,
+            data: {
+              from: "0x075b108fc0a6426f9dec9a5c18e87eb577d1346a",
+              to: "0xa24bc6b483eab099e3d877b2a350407d1323f098",
+              data: "0x0d4d1513000000000000000000000000075b108fc0a6426f9dec9a5c18e87eb577d1346a000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000001d4da48b00000000",
+              value: "0x886c98b76000",
+            },
+          },
+          chain: "base",
+        },
+      },
+    } as const,
+    status: 200,
+  },
+  // Updated touchgrass collection with mint stage details
+  {
+    data: {
+      result: {
+        mint: {
+          name: "touchgrass",
+          imageUrl:
+            "https://img.reservoir.tools/images/v2/base/i9YO%2F4yHXUdJsWcTqhqvf0HuRNOfH0JlxmkF8fFc%2Bzvc7Xi%2FCKncUl%2B9XCqdon72bQ1ezWBTciHWXLEfYlTbF19J7Qcl9gZNstO7FPIKV%2FWQOA9oJBKmCtsZHaB%2B4j3R?width=800",
+          description: "we do a little get outside and $touchgrass",
+          creator: {
+            fid: 8447,
+            username: "eriks",
+            displayName: "Erik",
+            pfp: {
+              url: "https://i.seadn.io/s/raw/files/ad549379a71c7948b405e10d84e5e7b7.png?w=500&auto=format",
+              verified: false,
+            },
+            profile: {
+              bio: {
+                text: "/positivesum, investor, photographer, nomad, exploring onchain & exploring the 🌎",
+                mentions: [],
+                channelMentions: ["positivesum"],
+              },
+            },
+            followerCount: 74258,
+            followingCount: 5464,
+          },
+          mint: {
+            totalMinted: 160,
+            maxPerWallet: 1000000000000000000,
+            priceEth: "0.00015",
+            startsAt: 1733437237000,
+            endsAt: null,
+            data: {
+              from: "0xfe819920199392cdd911acdaed84b38f30e27562",
+              to: "0xa24bc6b483eab099e3d877b2a350407d1323f098",
+              data: "0x0d4d1513000000000000000000000000075b108fc0a6426f9dec9a5c18e87eb577d1346a000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000001d4da48b00000000",
+              value: "0x886c98b76000",
+            },
+          },
+          chain: "base",
+        },
+      },
+    } as const,
+    status: 200,
+  },
+];
+
 class WarpcastApiClient extends AbstractWarpcastApiClient {
   /**
    * Get creator rewards leaderboard
    */
   getCreatorRewardsLeaderboard(
     params: ApiGetCreatorRewardsLeaderboardQueryParams,
-    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {},
+    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {}
   ) {
     return this.authedGet<ApiGetCreatorRewardsLeaderboard200Response>(
-      '/v1/creator-rewards-leaderboard',
+      "/v1/creator-rewards-leaderboard",
       {
         headers,
         timeout,
-        endpointName: 'getCreatorRewardsLeaderboard',
+        endpointName: "getCreatorRewardsLeaderboard",
         params,
-      },
+      }
     );
   }
 
@@ -790,12 +913,12 @@ class WarpcastApiClient extends AbstractWarpcastApiClient {
     timeout,
   }: { headers?: RequestHeaders; timeout?: number } = {}) {
     return this.authedGet<ApiGetCreatorRewardsMetadata200Response>(
-      '/v1/creator-rewards-metadata',
+      "/v1/creator-rewards-metadata",
       {
         headers,
         timeout,
-        endpointName: 'getCreatorRewardsMetadata',
-      },
+        endpointName: "getCreatorRewardsMetadata",
+      }
     );
   }
 
@@ -804,16 +927,16 @@ class WarpcastApiClient extends AbstractWarpcastApiClient {
    */
   getCreatorRewardsForUser(
     params: ApiGetCreatorRewardsForUserQueryParams,
-    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {},
+    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {}
   ) {
     return this.authedGet<ApiGetCreatorRewardsForUser200Response>(
-      '/v1/creator-rewards-scores-for-user',
+      "/v1/creator-rewards-scores-for-user",
       {
         headers,
         timeout,
-        endpointName: 'getCreatorRewardsForUser',
+        endpointName: "getCreatorRewardsForUser",
         params,
-      },
+      }
     );
   }
 
@@ -822,16 +945,16 @@ class WarpcastApiClient extends AbstractWarpcastApiClient {
    */
   getCreatorRewardsEarningsHistory(
     params: ApiGetCreatorRewardsEarningsHistoryQueryParams,
-    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {},
+    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {}
   ) {
     return this.authedGet<ApiGetCreatorRewardsEarningsHistory200Response>(
-      '/v1/creator-rewards-earnings-history',
+      "/v1/creator-rewards-earnings-history",
       {
         headers,
         timeout,
-        endpointName: 'getCreatorRewardsEarningsHistory',
+        endpointName: "getCreatorRewardsEarningsHistory",
         params,
-      },
+      }
     );
   }
 
@@ -840,17 +963,23 @@ class WarpcastApiClient extends AbstractWarpcastApiClient {
    */
   getCreatorRewardsPeriodSummary(
     params: ApiGetCreatorRewardsPeriodSummaryQueryParams,
-    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {},
+    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {}
   ) {
     return this.authedGet<ApiGetCreatorRewardsPeriodSummary200Response>(
-      '/v1/creator-rewards-period-summary',
+      "/v1/creator-rewards-period-summary",
       {
         headers,
         timeout,
-        endpointName: 'getCreatorRewardsPeriodSummary',
+        endpointName: "getCreatorRewardsPeriodSummary",
         params,
-      },
+      }
     );
+  }
+
+  getFeaturedMint({
+    stubIndex = 1,
+  }: { headers?: RequestHeaders; timeout?: number; stubIndex?: number } = {}) {
+    return Promise.resolve(STUB_RESPONSES[stubIndex]);
   }
 }
 

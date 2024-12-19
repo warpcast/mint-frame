@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthedPrefetchesProvider } from './AuthedPrefetchesProvider';
 import { FrameContextProvider } from './FrameContextProvider';
 import { FrameSplashProvider } from './FrameSplashProvider';
+import { WalletProvider } from './WalletProvider';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -20,9 +21,11 @@ function Providers({ children }: React.PropsWithChildren) {
       <FrameContextProvider>
         <QueryClientProvider client={client}>
           <AuthedPrefetchesProvider>
+            <WalletProvider>
             {/* */}
             {children}
             {/* */}
+            </WalletProvider>
           </AuthedPrefetchesProvider>
         </QueryClientProvider>
       </FrameContextProvider>

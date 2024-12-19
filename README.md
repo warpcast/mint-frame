@@ -2,8 +2,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 It utilizes `shadcn` for some core components and all data requests are done with `@tanstack/react-query` wrappers.
 
-`FarcasterApiClient` implementation and `List` component are stripped-down versions of what Warpcast team has built for Warpcast clients.
-
 ## Getting Started
 
 First, run the development server:

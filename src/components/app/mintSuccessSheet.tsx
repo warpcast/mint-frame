@@ -1,20 +1,27 @@
 import { CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerContent,
   DrawerOverlay,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
 
 interface MintSuccessSheetProps {
   isOpen: boolean;
   onClose: () => void;
+  name: string;
+  imageUrl: string;
 }
 
-export function MintSuccessSheet({ isOpen, onClose }: MintSuccessSheetProps) {
+export function MintSuccessSheet({
+  isOpen,
+  onClose,
+  name,
+  imageUrl
+}: MintSuccessSheetProps) {
   return (
     <Drawer open={isOpen} onClose={onClose}>
       <DrawerOverlay className="!bg-black/30 backdrop-blur-[7.5px]" />
@@ -36,8 +43,8 @@ export function MintSuccessSheet({ isOpen, onClose }: MintSuccessSheetProps) {
           <div className="bg-card rounded-xl p-3 shadow-lg mb-8">
             <div className="relative aspect-square w-full rounded-lg overflow-hidden">
               <Image
-                src="/placeholder-nft.png"
-                alt="NFT Artwork"
+                src={imageUrl}
+                alt={name}
                 fill
                 className="object-cover"
               />

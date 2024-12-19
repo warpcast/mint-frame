@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import SplashImage from '../../../public/splash.png';
+import SplashImage from "../../../public/splash.png";
 
 const FRAME_SPLASH_IMAGE_SIZE = 88;
 
-function Loading() {
+const Loading = () => {
   return (
     <div className="inset-0 absolute w-full items-center justify-center flex flex-col flex-grow h-full">
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -18,6 +18,6 @@ function Loading() {
       />
     </div>
   );
-}
+};
 
 export { Loading };

@@ -2,7 +2,6 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 
-import { Header } from "@/components/ui/header";
 import { Providers } from "@/providers/Providers";
 
 const frame = {

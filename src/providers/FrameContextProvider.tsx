@@ -1,17 +1,15 @@
-import sdk, { FrameContext } from '@farcaster/frame-sdk';
-import React from 'react';
+import sdk, { FrameContext } from "@farcaster/frame-sdk";
+import React from "react";
 
-import { Loading } from '@/components/ui/loading';
-
-import { useFrameSplash } from './FrameSplashProvider';
+import { Loading } from "@/components/ui/loading";
 
 const FAKE_FRAME_CONTEXT: FrameContext | undefined =
-  process.env.NODE_ENV === 'development'
+  process.env.NODE_ENV === "development"
     ? {
         user: {
           fid: 1287,
           pfpUrl:
-            'https://i.seadn.io/gcs/files/ed56e6b9a1b22720ce7490524db333e0.jpg?w=500&auto=format',
+            "https://i.seadn.io/gcs/files/ed56e6b9a1b22720ce7490524db333e0.jpg?w=500&auto=format",
         },
         client: {
           clientFid: 9152,
@@ -34,7 +32,6 @@ function FrameContextProvider({ children }: React.PropsWithChildren) {
   const [noFrameContextFound, setNoFrameContextFound] =
     React.useState<boolean>(false);
 
-  const { dismiss } = useFrameSplash();
 
   const [frameContext, setFrameContext] = React.useState<
     FrameContext | undefined
@@ -44,20 +41,18 @@ function FrameContextProvider({ children }: React.PropsWithChildren) {
     const ctx: FrameContext = await sdk.context;
 
     if (
-      typeof ctx !== 'undefined' &&
+      typeof ctx !== "undefined" &&
       ctx !== null &&
-      typeof frameContext === 'undefined'
+      typeof frameContext === "undefined"
     ) {
       setFrameContext(ctx);
     } else {
       setNoFrameContextFound(true);
     }
-
-    dismiss();
-  }, [dismiss, frameContext]);
+  }, [frameContext]);
 
   React.useEffect(() => {
-    if (typeof frameContext === 'undefined') {
+    if (typeof frameContext === "undefined") {
       checkFrameContext();
     }
   }, [checkFrameContext, frameContext]);
@@ -66,7 +61,7 @@ function FrameContextProvider({ children }: React.PropsWithChildren) {
     return <Loading />;
   }
 
-  if (typeof frameContext === 'undefined') {
+  if (typeof frameContext === "undefined") {
     return <Loading />;
   }
 

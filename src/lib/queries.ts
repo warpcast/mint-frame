@@ -3,10 +3,10 @@ import {
   useQueryClient,
   useSuspenseInfiniteQuery,
   useSuspenseQuery,
-} from '@tanstack/react-query';
-import { useCallback } from 'react';
+} from "@tanstack/react-query";
+import { useCallback } from "react";
 
-import { api } from './api';
+import { api } from "./api";
 
 type PaginatedResponse = {
   next: { cursor: string };
@@ -33,7 +33,7 @@ const usePrefetchCreatorRewardsMetadata = () => {
 
   return useCallback(() => {
     return qc.prefetchQuery({
-      queryKey: ['creatorRewardsMetadata'],
+      queryKey: ["creatorRewardsMetadata"],
       queryFn: async () => {
         const response = await api.getCreatorRewardsMetadata();
         return response.data;
@@ -48,14 +48,14 @@ const usePrefetchCreatorRewards = () => {
   return useCallback(
     ({ fid }: { fid: number }) => {
       return qc.prefetchQuery({
-        queryKey: ['creatorReward', fid],
+        queryKey: ["creatorReward", fid],
         queryFn: async () => {
           const response = await api.getCreatorRewardsForUser({ fid });
           return response.data;
         },
       });
     },
-    [qc],
+    [qc]
   );
 };
 
@@ -64,7 +64,7 @@ const usePrefetchCreatorRewardsLeaderboard = () => {
 
   return useCallback(() => {
     return qc.prefetchInfiniteQuery({
-      queryKey: ['creatorRewardsLeaderboard'],
+      queryKey: ["creatorRewardsLeaderboard"],
       queryFn: async () => {
         const response = await api.getCreatorRewardsLeaderboard({ limit: 30 });
         return response.data;
@@ -80,20 +80,20 @@ const usePrefetchCreatorRewardsPeriodSummary = () => {
   return useCallback(
     ({ fid }: { fid: number }) => {
       return qc.prefetchQuery({
-        queryKey: ['creatorRewardsPeriodSummary', fid],
+        queryKey: ["creatorRewardsPeriodSummary", fid],
         queryFn: async () => {
           const response = await api.getCreatorRewardsPeriodSummary({ fid });
           return response.data;
         },
       });
     },
-    [qc],
+    [qc]
   );
 };
 
 const useCreatorRewardsMetadata = () => {
   return useSuspenseQuery({
-    queryKey: ['creatorRewardsMetadata'],
+    queryKey: ["creatorRewardsMetadata"],
     queryFn: async () => {
       const response = await api.getCreatorRewardsMetadata();
       return response.data;
@@ -103,10 +103,10 @@ const useCreatorRewardsMetadata = () => {
 
 const useCreatorRewardsLeaderboard = () => {
   return useInfiniteQuery({
-    queryKey: ['creatorRewardsLeaderboard'],
+    queryKey: ["creatorRewardsLeaderboard"],
     queryFn: async ({ pageParam: cursor }) => {
       const params =
-        typeof cursor !== 'undefined' ? { cursor, limit: 30 } : { limit: 30 };
+        typeof cursor !== "undefined" ? { cursor, limit: 30 } : { limit: 30 };
       const response = await api.getCreatorRewardsLeaderboard(params);
       return response.data;
     },
@@ -117,7 +117,7 @@ const useCreatorRewardsLeaderboard = () => {
 
 const useCreatorRewards = ({ fid }: { fid: number }) => {
   return useSuspenseQuery({
-    queryKey: ['creatorReward', fid],
+    queryKey: ["creatorReward", fid],
     queryFn: async () => {
       const response = await api.getCreatorRewardsForUser({ fid });
       return response.data;
@@ -127,10 +127,10 @@ const useCreatorRewards = ({ fid }: { fid: number }) => {
 
 const useCreatorRewardsEarningHistory = ({ fid }: { fid: number }) => {
   return useSuspenseInfiniteQuery({
-    queryKey: ['creatorRewardsEarningHistory', fid],
+    queryKey: ["creatorRewardsEarningHistory", fid],
     queryFn: async ({ pageParam: cursor }) => {
       const params =
-        typeof cursor !== 'undefined'
+        typeof cursor !== "undefined"
           ? { cursor, fid, limit: 52 }
           : { fid, limit: 52 };
       const response = await api.getCreatorRewardsEarningsHistory(params);
@@ -143,9 +143,19 @@ const useCreatorRewardsEarningHistory = ({ fid }: { fid: number }) => {
 
 const useCreatorRewardsPeriodSummary = ({ fid }: { fid: number }) => {
   return useSuspenseQuery({
-    queryKey: ['creatorRewardsPeriodSummary', fid],
+    queryKey: ["creatorRewardsPeriodSummary", fid],
     queryFn: async () => {
       const response = await api.getCreatorRewardsPeriodSummary({ fid });
+      return response.data;
+    },
+  });
+};
+
+const useFeaturedMint = () => {
+  return useSuspenseQuery({
+    queryKey: ["featuredMint"],
+    queryFn: async () => {
+      const response = await api.getFeaturedMint();
       return response.data;
     },
   });
@@ -157,6 +167,7 @@ export {
   useCreatorRewardsLeaderboard,
   useCreatorRewardsMetadata,
   useCreatorRewardsPeriodSummary,
+  useFeaturedMint,
   usePrefetchCreatorRewards,
   usePrefetchCreatorRewardsLeaderboard,
   usePrefetchCreatorRewardsMetadata,
