@@ -113,22 +113,13 @@
   }
 }
 
-@keyframes borderPathAnimation {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: 1000;
-  }
-}
-
 @layer utilities {
   @keyframes border-slide {
     from {
-      stroke-dashoffset: var(--start-offset, 0);
+      stroke-dashoffset: 33;
     }
     to {
-      stroke-dashoffset: calc(var(--start-offset, 0) - 100);
+      stroke-dashoffset: -66;
     }
   }
 

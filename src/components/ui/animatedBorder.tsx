@@ -5,7 +5,7 @@ interface AnimatedBorderProps {
   startOffset?: number;
 }
 
-const AnimatedBorder = ({ children, startOffset = 0 }: AnimatedBorderProps) => {
+const AnimatedBorder = ({ children }: AnimatedBorderProps) => {
   return (
     <div className="relative">
       <div className="absolute inset-0">
@@ -14,17 +14,17 @@ const AnimatedBorder = ({ children, startOffset = 0 }: AnimatedBorderProps) => {
             <linearGradient id="borderGradient">
               <stop
                 offset="0%"
-                stopColor="hsl(var(--primary))"
+                stopColor="var(--action-foreground)"
                 stopOpacity="0"
               />
               <stop
                 offset="50%"
-                stopColor="hsl(var(--primary))"
+                stopColor="var(--action-foreground)"
                 stopOpacity="1"
               />
               <stop
                 offset="100%"
-                stopColor="hsl(var(--primary))"
+                stopColor="var(--action-foreground)"
                 stopOpacity="0"
               />
             </linearGradient>
@@ -42,7 +42,6 @@ const AnimatedBorder = ({ children, startOffset = 0 }: AnimatedBorderProps) => {
             pathLength="100"
             className="animate-border-slide"
             strokeDasharray="30 70"
-            style={{ strokeDashoffset: startOffset }}
           />
         </svg>
       </div>

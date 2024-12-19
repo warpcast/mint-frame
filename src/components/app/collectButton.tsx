@@ -50,8 +50,11 @@ export function CollectButton({
 
   const isPending = isSending || isConfirming;
 
+  const successHandled = React.useRef(false);
+
   React.useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && !successHandled.current) {
+      successHandled.current = true;
       onCollect();
     }
   }, [isSuccess, onCollect]);
@@ -84,7 +87,7 @@ export function CollectButton({
       <div className="sticky bottom-0 left-0 right-0 pb-[env(safe-area-inset-bottom)] bg-card">
         <div className="mb-4">
           {isPending ? (
-            <AnimatedBorder startOffset={30}>
+            <AnimatedBorder>
               <Button className="w-full relative" disabled>
                 Collecting...
               </Button>
@@ -98,11 +101,11 @@ export function CollectButton({
 
         <div className="flex justify-center gap-1 text-sm text-muted">
           <span>{totalMinted} collected</span>
-          <span className="text-muted/60">•</span>
+          <span className="text-muted">•</span>
           <span>Max {formatMaxPerWallet(maxPerWallet)} per wallet</span>
           {timestamp && (
             <>
-              <span className="text-muted/60">•</span>
+              <span className="text-muted">•</span>
               <span className="inline-block min-w-[65px]">
                 <FormattedTimeWithCountdown timestamp={timestamp} />
               </span>
