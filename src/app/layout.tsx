@@ -6,15 +6,15 @@ import { Providers } from "@/providers/Providers";
 
 const frame = {
   version: "next",
-  imageUrl: `https://rewards.warpcast.com/og.png`,
+  imageUrl: `https://wc-featured-mint.vercel.app/api/og`,
   button: {
     title: "Launch",
     action: {
       type: "launch_frame",
-      name: "Warpcast Rewards",
-      url: "https://rewards.warpcast.com",
-      iconImageUrl: `https://rewards.warpcast.com/splash.png`,
-      splashImageUrl: `https://rewards.warpcast.com/splash.png`,
+      name: "Featured Mint",
+      url: "https://wc-featured-mint.vercel.app/",
+      iconImageUrl: `https://wc-featured-mint.vercel.app/splash.png`,
+      splashImageUrl: `https://wc-featured-mint.vercel.app/splash.png`,
       splashBackgroundColor: "#000000",
     },
   },
@@ -22,12 +22,12 @@ const frame = {
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    metadataBase: new URL("https://rewards.warpcast.com"),
-    title: "Warpcast Rewards",
+    metadataBase: new URL("https://wc-featured-mint.vercel.app/"),
+    title: "Featured Mint",
     openGraph: {
       title: "Warpcast",
-      description: "Warpcast Rewards",
-      images: `https://rewards.warpcast.com/og.png`,
+      description: "Featured Mint",
+      images: `https://wc-featured-mint.vercel.app/api/og`,
     },
     other: {
       "fc:frame": JSON.stringify(frame),

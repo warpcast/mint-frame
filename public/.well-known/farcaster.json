@@ -7,12 +7,11 @@
   "frame": {
     "version": "1",
     "name": "Featured Mint",
-    "imageUrl": "https://rewards.warpcast.com/og.png",
+    "imageUrl": "https://wc-featured-mint.vercel.app/api/og",
     "buttonTitle": "Launch",
-    "iconUrl": "https://rewards.warpcast.com/app.png",
-    "splashImageUrl": "https://rewards.warpcast.com/logo.png",
+    "iconUrl": "https://wc-featured-mint.vercel.app/app.png",
+    "splashImageUrl": "https://wc-featured-mint.vercel.app/logo.png",
     "splashBackgroundColor": "#000000",
-    "homeUrl": "https://rewards.warpcast.com",
-    "webhookUrl": "https://client.warpcast.com/v1/creator-rewards-notifs-webhook"
+    "homeUrl": "https://wc-featured-mint.vercel.app/"
   }
 }
