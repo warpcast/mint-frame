@@ -26,14 +26,17 @@ export default function Home() {
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <ArtworkImage imageUrl={mint.imageUrl} name={mint.name} />
+      <ArtworkImage
+        imageUrl={mint.imageUrl}
+        name={mint.name}
+        onError={setError}
+      />
       <Card className="flex flex-col p-4 -mt-6 relative z-1 rounded-t-xl rounded-b-none flex-grow">
         <ArtworkInfo
           name={mint.name}
           creator={mint.creator}
           chain={mint.chain}
           description={mint.description}
-          onError={setError}
         />
         <CollectButton
           timestamp={mint.mint.endsAt}

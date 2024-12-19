@@ -1,31 +1,28 @@
 import sdk from "@farcaster/frame-sdk";
+import { useCallback } from "react";
 
 import { ShareIcon } from "@/components/core/icons";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import type { ApiChain, ApiUser } from "@/lib/api";
+import { getShareUrl } from "@/lib/share";
 
 interface ArtworkInfoProps {
   name: string;
   creator: ApiUser;
   chain: ApiChain;
   description: string;
-  onError: (error: string) => void;
 }
 
-export function ArtworkInfo({
-  name,
-  creator,
-  description,
-  onError,
-}: ArtworkInfoProps) {
+export function ArtworkInfo({ name, creator, description }: ArtworkInfoProps) {
   const handleUsernameClick = () => {
     sdk.actions.openUrl(`https://warpcast.com/${creator.username}`);
   };
 
-  const handleShareClick = () => {
-    onError("This is a test error message to demonstrate the error sheet!");
-  };
+  const handleShareClick = useCallback(() => {
+    const url = getShareUrl({ name, username: creator.username });
+    sdk.actions.openUrl(url);
+  }, [name, creator.username]);
 
   return (
     <div className="flex flex-col flex-grow">
@@ -52,7 +49,11 @@ export function ArtworkInfo({
             <div className="flex items-center gap-1">
               <span className="text-sm text-muted">on</span>
               <Avatar className="h-4 w-4 bg-secondary rounded-full">
-                <AvatarImage src="https://wc-featured-mint.vercel.app/base-logo.png" alt="Base" width={16} />
+                <AvatarImage
+                  src="https://wc-featured-mint.vercel.app/base-logo.png"
+                  alt="Base"
+                  width={16}
+                />
               </Avatar>
               <span className="text-sm">Base</span>
             </div>

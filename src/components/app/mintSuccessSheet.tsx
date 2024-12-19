@@ -1,5 +1,7 @@
+import sdk from "@farcaster/frame-sdk";
 import { CheckCircle2 } from "lucide-react";
 import Image from "next/image";
+import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -8,6 +10,7 @@ import {
   DrawerOverlay,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import { getShareUrl } from "@/lib/share";
 
 interface MintSuccessSheetProps {
   isOpen: boolean;
@@ -22,6 +25,11 @@ export function MintSuccessSheet({
   name,
   imageUrl
 }: MintSuccessSheetProps) {
+  const handleShare = useCallback(() => {
+    const url = getShareUrl({ name });
+    sdk.actions.openUrl(url);
+  }, [name]);
+
   return (
     <Drawer open={isOpen} onClose={onClose}>
       <DrawerOverlay className="!bg-black/30 backdrop-blur-[7.5px]" />
@@ -57,7 +65,7 @@ export function MintSuccessSheet({
             <Button variant="secondary" className="flex-1" onClick={onClose}>
               Done
             </Button>
-            <Button variant="default" className="flex-1">
+            <Button variant="default" className="flex-1" onClick={handleShare}>
               Share
             </Button>
           </div>
