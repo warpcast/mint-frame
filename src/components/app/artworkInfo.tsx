@@ -13,7 +13,12 @@ interface ArtworkInfoProps {
   onError: (error: string) => void;
 }
 
-export function ArtworkInfo({ name, creator, description, onError }: ArtworkInfoProps) {
+export function ArtworkInfo({
+  name,
+  creator,
+  description,
+  onError,
+}: ArtworkInfoProps) {
   const handleUsernameClick = () => {
     sdk.actions.openUrl(`https://warpcast.com/${creator.username}`);
   };
@@ -47,7 +52,7 @@ export function ArtworkInfo({ name, creator, description, onError }: ArtworkInfo
             <div className="flex items-center gap-1">
               <span className="text-sm text-muted/60">on</span>
               <Avatar className="h-4 w-4">
-                <AvatarImage src="/base-logo.svg" alt="Base" width={16} />
+                <AvatarImage src="/base-logo.png" alt="Base" width={16} />
               </Avatar>
               <span className="text-sm text-muted">Base</span>
             </div>
