@@ -1,28 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-
 import { ImageResponse } from "@vercel/og";
-import { NextRequest } from "next/server";
+
+import { api } from "@/lib/api";
 
 export const runtime = "edge";
 
-const DEFAULT_PARAMS = {
-  name: "touchgrass",
-  imageUrl:
-    "https://img.reservoir.tools/images/v2/base/i9YO%2F4yHXUdJsWcTqhqvf0HuRNOfH0JlxmkF8fFc%2Bzvc7Xi%2FCKncUl%2B9XCqdon72bQ1ezWBTciHWXLEfYlTbF19J7Qcl9gZNstO7FPIKV%2FWQOA9oJBKmCtsZHaB%2B4j3R?width=412",
-  username: "eriks",
-  pfpUrl:
-    "https://i.seadn.io/s/raw/files/ad549379a71c7948b405e10d84e5e7b7.png?w=500&auto=format",
-  chain: "Base",
-} as const;
-
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const name = searchParams.get("name") || DEFAULT_PARAMS.name;
-  const imageUrl = searchParams.get("imageUrl") || DEFAULT_PARAMS.imageUrl;
-  const username = searchParams.get("username") || DEFAULT_PARAMS.username;
-  const pfpUrl = searchParams.get("pfpUrl") || DEFAULT_PARAMS.pfpUrl;
-
+export async function GET() {
   try {
+    const {
+      data: {
+        result: { mint },
+      },
+    } = await api.getFeaturedMint();
+
     const interRegular = await fetch(
       new URL(
         "https://wc-featured-mint.vercel.app/fonts/Inter-Regular.ttf",
@@ -44,7 +34,9 @@ export async function GET(req: NextRequest) {
       )
     ).then((res) => res.arrayBuffer());
 
-    return new ImageResponse(
+    const imageUrl = mint.imageUrl.replace('?width=250', '?width=1600');
+
+    const imageResponse = new ImageResponse(
       (
         <div
           style={{
@@ -59,7 +51,7 @@ export async function GET(req: NextRequest) {
           {/* Background Image */}
           <img
             src={imageUrl}
-            alt={name}
+            alt={mint.name}
             style={{
               position: "absolute",
               top: 0,
@@ -71,54 +63,56 @@ export async function GET(req: NextRequest) {
           />
 
           {/* Live Pill */}
-          <div
-            style={{
-              position: "absolute",
-              top: "24px",
-              right: "24px",
-              background: "rgba(0, 0, 0, 0.5)",
-              display: "flex",
-              padding: "12px 24px",
-              alignItems: "center",
-              gap: "12px",
-              borderRadius: "999px",
-            }}
-          >
+          {mint.isMinting && (
             <div
               style={{
+                position: "absolute",
+                top: "24px",
+                right: "24px",
+                background: "rgba(0, 0, 0, 0.5)",
                 display: "flex",
-                width: "30px",
-                height: "30px",
-                padding: "9px",
+                padding: "12px 24px",
                 alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "15px",
-                background: "rgba(255, 255, 255, 0.30)",
+                gap: "12px",
+                borderRadius: "999px",
               }}
             >
               <div
                 style={{
-                  width: "12px",
-                  height: "12px",
-                  borderRadius: "6px",
-                  background: "#FFFFFF",
+                  display: "flex",
+                  width: "30px",
+                  height: "30px",
+                  padding: "9px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "15px",
+                  background: "rgba(255, 255, 255, 0.30)",
                 }}
-              />
+              >
+                <div
+                  style={{
+                    width: "12px",
+                    height: "12px",
+                    borderRadius: "6px",
+                    background: "#FFFFFF",
+                  }}
+                />
+              </div>
+              <span
+                style={{
+                  color: "#FFF",
+                  fontFamily: "Inter",
+                  fontSize: "36px",
+                  fontStyle: "normal",
+                  fontWeight: 500,
+                  lineHeight: "48px",
+                  letterSpacing: "-0.27px",
+                }}
+              >
+                LIVE
+              </span>
             </div>
-            <span
-              style={{
-                color: "#FFF",
-                fontFamily: "Inter",
-                fontSize: "36px",
-                fontStyle: "normal",
-                fontWeight: 500,
-                lineHeight: "48px",
-                letterSpacing: "-0.27px",
-              }}
-            >
-              LIVE
-            </span>
-          </div>
+          )}
 
           {/* Info Box */}
           <div
@@ -157,7 +151,7 @@ export async function GET(req: NextRequest) {
                   letterSpacing: "-0.27px",
                 }}
               >
-                {name}
+                {mint.name}
               </div>
 
               <div
@@ -175,10 +169,10 @@ export async function GET(req: NextRequest) {
                 }}
               >
                 <span>by</span>
-                {pfpUrl && (
+                {mint.creator.pfp && (
                   <img
-                    src={pfpUrl}
-                    alt={username}
+                    src={mint.creator.pfp.url}
+                    alt={mint.creator.displayName}
                     width="48"
                     height="48"
                     style={{
@@ -199,7 +193,7 @@ export async function GET(req: NextRequest) {
                     letterSpacing: "-0.45px",
                   }}
                 >
-                  {username}
+                  {mint.creator.username}
                 </span>
                 <span>on</span>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -257,7 +251,22 @@ export async function GET(req: NextRequest) {
         ],
       }
     );
+
+    const headers = new Headers(imageResponse.headers);
+    headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=59');
+
+    return new Response(imageResponse.body, {
+      headers,
+      status: imageResponse.status,
+      statusText: imageResponse.statusText,
+    });
+
   } catch {
-    return new Response("Failed to generate image", { status: 500 });
+    return new Response("Failed to generate image", {
+      status: 500,
+      headers: {
+        'Cache-Control': 'no-store'
+      }
+    });
   }
 }

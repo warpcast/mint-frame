@@ -1,5 +1,6 @@
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
 import React from "react";
+import { formatUnits } from "viem";
 import {
   useAccount,
   useConnect,
@@ -7,39 +8,24 @@ import {
   useWaitForTransactionReceipt,
 } from "wagmi";
 
-import { FormattedTimeWithCountdown } from "@/components/app/formattedTimeWithCountdown";
 import { AnimatedBorder } from "@/components/ui/animatedBorder";
 import { Button } from "@/components/ui/button";
 import { isUserRejectionError } from "@/lib/errors";
-
-const formatMaxPerWallet = (max: number) => {
-  return max > 100 ? ">100" : max.toString();
-};
+import { useFeaturedMintTransaction } from "@/lib/queries";
 
 interface CollectButtonProps {
-  timestamp: number | null;
+  timestamp?: number;
   price: string;
-  totalMinted: number;
-  maxPerWallet: number;
   onCollect: () => void;
   onError: (error: string | undefined) => void;
-  mintData: {
-    to: `0x${string}`;
-    value: string;
-    data: `0x${string}`;
-  };
 }
 
 export function CollectButton({
-  timestamp,
   price,
-  totalMinted,
-  maxPerWallet,
   onCollect,
   onError,
-  mintData,
 }: CollectButtonProps) {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const { connect } = useConnect();
   const { sendTransactionAsync, isPending: isSending } = useSendTransaction();
   const [hash, setHash] = React.useState<`0x${string}`>();
@@ -52,6 +38,10 @@ export function CollectButton({
 
   const successHandled = React.useRef(false);
 
+  const { fetchTransaction } = useFeaturedMintTransaction();
+
+  const formattedPrice = formatUnits(BigInt(price), 18);
+
   React.useEffect(() => {
     if (isSuccess && !successHandled.current) {
       successHandled.current = true;
@@ -61,15 +51,19 @@ export function CollectButton({
 
   const handleClick = async () => {
     try {
-      if (!isConnected) {
+      if (!isConnected || !address) {
         connect({ connector: farcasterFrame() });
         return;
       }
 
+      const {
+        result: { tx },
+      } = await fetchTransaction(address);
+
       const hash = await sendTransactionAsync({
-        to: mintData.to,
-        value: BigInt(mintData.value),
-        data: mintData.data,
+        to: tx.to,
+        value: BigInt(tx.value),
+        data: tx.data,
       });
 
       setHash(hash);
@@ -94,22 +88,8 @@ export function CollectButton({
             </AnimatedBorder>
           ) : (
             <Button className="w-full" onClick={handleClick}>
-              {isConnected ? `Collect for ${price} ETH` : "Connect"}
+              {isConnected ? `Collect for ${formattedPrice} ETH` : "Connect"}
             </Button>
-          )}
-        </div>
-
-        <div className="flex justify-center gap-1 text-sm text-muted">
-          <span>{totalMinted} collected</span>
-          <span className="text-muted">•</span>
-          <span>Max {formatMaxPerWallet(maxPerWallet)} per wallet</span>
-          {timestamp && (
-            <>
-              <span className="text-muted">•</span>
-              <span className="inline-block min-w-[65px]">
-                <FormattedTimeWithCountdown timestamp={timestamp} />
-              </span>
-            </>
           )}
         </div>
       </div>

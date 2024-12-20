@@ -26,11 +26,7 @@ export default function Home() {
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <ArtworkImage
-        imageUrl={mint.imageUrl}
-        name={mint.name}
-        onError={setError}
-      />
+      <ArtworkImage imageUrl={mint.imageUrl} name={mint.name} />
       <Card className="flex flex-col p-4 -mt-6 relative z-1 rounded-t-xl rounded-b-none flex-grow">
         <ArtworkInfo
           name={mint.name}
@@ -39,13 +35,10 @@ export default function Home() {
           description={mint.description}
         />
         <CollectButton
-          timestamp={mint.mint.endsAt}
-          price={mint.mint.priceEth}
-          totalMinted={mint.mint.totalMinted}
-          maxPerWallet={mint.mint.maxPerWallet}
+          timestamp={mint.endsAt}
+          price={mint.priceEth}
           onCollect={() => setShowSuccess(true)}
           onError={setError}
-          mintData={mint.mint.data}
         />
       </Card>
       <MintSuccessSheet

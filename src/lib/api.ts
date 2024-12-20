@@ -165,11 +165,8 @@ type RequestParams = Record<
 type RequestData = any;
 
 type EndpointName =
-  | "getCreatorRewardsForUser"
-  | "getCreatorRewardsLeaderboard"
-  | "getCreatorRewardsMetadata"
-  | "getCreatorRewardsEarningsHistory"
-  | "getCreatorRewardsPeriodSummary";
+  | "getFeaturedMint"
+  | "getFeaturedMintTransaction";
 
 type Fetcher = typeof fetch;
 
@@ -643,6 +640,14 @@ type ApiProfile = {
   };
 };
 
+export type ApiChain = "base";
+
+export type ApiHexString = `0x${string}`;
+
+export type ApiEthereumAddress = `0x${string}`;
+
+export type ApiUri = string;
+
 export interface ApiUser {
   fid: ApiFid;
   username?: ApiFname;
@@ -653,333 +658,107 @@ export interface ApiUser {
   followingCount: ApiNonNegativeInteger;
 }
 
-export type ApiCreatorRewardsMetadata = {
-  lastUpdateTimestamp: ApiNonNegativeInteger;
-  currentPeriodStartTimestamp: ApiNonNegativeInteger;
-  currentPeriodEndTimestamp: ApiNonNegativeInteger;
-};
-
-export type ApiUserCreatorRewardsScores = {
-  user: ApiUser;
-  allTimeScore: ApiNonNegativeInteger;
-  currentPeriodScore: ApiNonNegativeInteger;
-  previousPeriodScore: ApiNonNegativeInteger;
-  currentPeriodRank?: ApiNonNegativeInteger;
-};
-
-export type ApiCreatorRewardsLeaderboardUser = {
-  user: ApiUser;
-  score: ApiNonNegativeInteger;
-  rank: ApiNonNegativeInteger;
-};
-
-export type ApiCreatorRewardsLeaderboard = {
-  users: ApiCreatorRewardsLeaderboardUser[];
-};
-
-export type ApiCreatorRewardsEarnings = {
-  periodStartDate: ApiTimestampMillis;
-  periodEndDate: ApiTimestampMillis;
-  amountCents: ApiNonNegativeInteger;
-  rank: ApiNonNegativeInteger;
-  numContenders: ApiNonNegativeInteger;
-};
-
-export type ApiCreatorRewardsEarningsHistory = {
-  earnings: ApiCreatorRewardsEarnings[];
-  totalEarningsCents: ApiNonNegativeInteger;
-};
-
-export type ApiCreatorRewardsPeriodSummary = {
-  periodStartDate: ApiTimestampMillis;
-  periodEndDate: ApiTimestampMillis;
-  rewardCents: ApiNonNegativeInteger;
-  score: ApiNonNegativeInteger;
-  rank?: ApiNonNegativeInteger;
-};
-
-type ApiGetCreatorRewardsMetadata200Response = {
-  result: {
-    metadata: ApiCreatorRewardsMetadata;
-  };
-};
-
-type ApiGetCreatorRewardsForUserQueryParamsCamelCase = {
-  fid: number;
-};
-
-type ApiGetCreatorRewardsForUserQueryParams =
-  ApiGetCreatorRewardsForUserQueryParamsCamelCase;
-
-type ApiGetCreatorRewardsForUser200Response = {
-  result: {
-    scores: ApiUserCreatorRewardsScores;
-  };
-};
-
-type ApiGetCreatorRewardsLeaderboardQueryParamsCamelCase = {
-  cursor?: string;
-  limit: number;
-};
-
-type ApiGetCreatorRewardsLeaderboardQueryParams =
-  ApiGetCreatorRewardsLeaderboardQueryParamsCamelCase;
-
-type ApiGetCreatorRewardsLeaderboard200Response = {
-  result: {
-    leaderboard: ApiCreatorRewardsLeaderboard;
-  };
-  next?: {
-    cursor?: string;
-  };
-};
-
-type ApiGetCreatorRewardsEarningsHistoryQueryParamsCamelCase = {
-  fid: number;
-  cursor?: string;
-  limit: number;
-};
-type ApiGetCreatorRewardsEarningsHistoryQueryParams =
-  ApiGetCreatorRewardsEarningsHistoryQueryParamsCamelCase;
-
-type ApiGetCreatorRewardsEarningsHistory200Response = {
-  result: {
-    earnings: ApiCreatorRewardsEarningsHistory;
-  };
-  next?: {
-    cursor?: string;
-  };
-};
-
-export type ApiGetCreatorRewardsPeriodSummaryQueryParamsCamelCase = {
-  fid: number;
-};
-export type ApiGetCreatorRewardsPeriodSummaryQueryParams =
-  ApiGetCreatorRewardsPeriodSummaryQueryParamsCamelCase;
-
-export type ApiGetCreatorRewardsPeriodSummary200Response = {
-  result: {
-    summary: ApiCreatorRewardsPeriodSummary;
-  };
-};
-
-export type ApiChain = "base";
-
-export type ApiHexString = `0x${string}`;
+export type ApiUserMinimal = {
+  fid: ApiFid,
+  username?: ApiFname,
+  displayName: ApiDisplayName,
+  pfp?: ApiPfp,
+}
 
 export type ApiFeaturedMint = {
-  name: string;
-  imageUrl: string;
-  description: string;
-  creator: ApiUser;
-  mint: {
-    totalMinted: number;
-    maxPerWallet: number;
-    priceEth: string;
-    startsAt: number;
-    endsAt: number | null;
-    data: {
-      from: ApiHexString;
-      to: ApiHexString;
-      data: ApiHexString;
-      value: ApiHexString;
-    };
-  };
-  chain: ApiChain;
-};
+  name: string,
+  imageUrl: ApiUri,
+  description?: string,
+  creator: ApiUserMinimal,
+  chain: ApiChain,
+  collection: ApiEthereumAddress,
+  contract: ApiEthereumAddress,
+  tokenId?: string,
+  isMinting: boolean,
+  priceEth: string,
+  startsAt?: ApiTimestampMillis,
+  endsAt?: ApiTimestampMillis,
+}
+
+export type ApiFeaturedMintData = {
+  name: string,
+  imageUrl: ApiUri,
+  creatorFid: ApiFid,
+  collection: ApiEthereumAddress,
+  contract: ApiEthereumAddress,
+  priceEth: string,
+  description?: string,
+  tokenId?: string,
+  startsAt?: ApiTimestampMillis,
+  endsAt?: ApiTimestampMillis,
+}
+
+export type ApiFeaturedMintTransaction = {
+  chain: ApiChain,
+  to: ApiEthereumAddress,
+  data: ApiHexString,
+  value: ApiHexString,
+}
+
+export type ApiGetFeaturedMintQueryParamsCamelCase = {
+  collection?: string,
+}
+export type ApiGetFeaturedMintQueryParams = ApiGetFeaturedMintQueryParamsCamelCase;
 
 export type ApiGetFeaturedMint200Response = {
   result: {
-    mint: ApiFeaturedMint;
-  };
-};
+    mint: ApiFeaturedMint,
+  },
+}
 
-const STUB_RESPONSES = [
-  // Original stub
-  {
-    data: {
-      result: {
-        mint: {
-          name: "Frostbitten Playground",
-          imageUrl: "/placeholder-nft.png",
-          description:
-            "Playgrounds meet Lord of the Flies, AI collaboration by YEDAI 2024.",
-          creator: {
-            fid: 1,
-            username: "yedai",
-            displayName: "YEDAI",
-            pfp: {
-              url: "/placeholder-artist.png",
-            },
-            profile: {
-              bio: {
-                text: "AI Art Collective",
-              },
-            },
-            followerCount: 1000,
-            followingCount: 100,
-          },
-          mint: {
-            totalMinted: 12,
-            maxPerWallet: 2,
-            priceEth: "0.04",
-            startsAt: Date.now() - 60 * 60 * 1000,
-            endsAt: Date.now() + 60 * 60 * 1000,
-            data: {
-              from: "0x075b108fc0a6426f9dec9a5c18e87eb577d1346a",
-              to: "0xa24bc6b483eab099e3d877b2a350407d1323f098",
-              data: "0x0d4d1513000000000000000000000000075b108fc0a6426f9dec9a5c18e87eb577d1346a000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000001d4da48b00000000",
-              value: "0x886c98b76000",
-            },
-          },
-          chain: "base",
-        },
-      },
-    } as const,
-    status: 200,
+export type ApiGetFeaturedMintTransactionQueryParamsCamelCase = {
+  address: ApiEthereumAddress,
+  collection?: ApiEthereumAddress,
+}
+export type ApiGetFeaturedMintTransactionQueryParams = ApiGetFeaturedMintTransactionQueryParamsCamelCase;
+
+export type ApiGetFeaturedMintTransaction200Response = {
+  result: {
+    tx: ApiFeaturedMintTransaction,
   },
-  // Updated touchgrass collection with mint stage details
-  {
-    data: {
-      result: {
-        mint: {
-          name: "touchgrass",
-          imageUrl:
-            "https://img.reservoir.tools/images/v2/base/i9YO%2F4yHXUdJsWcTqhqvf0HuRNOfH0JlxmkF8fFc%2Bzvc7Xi%2FCKncUl%2B9XCqdon72bQ1ezWBTciHWXLEfYlTbF19J7Qcl9gZNstO7FPIKV%2FWQOA9oJBKmCtsZHaB%2B4j3R?width=800",
-          description: "we do a little get outside and $touchgrass",
-          creator: {
-            fid: 8447,
-            username: "eriks",
-            displayName: "Erik",
-            pfp: {
-              url: "https://i.seadn.io/s/raw/files/ad549379a71c7948b405e10d84e5e7b7.png?w=500&auto=format",
-              verified: false,
-            },
-            profile: {
-              bio: {
-                text: "/positivesum, investor, photographer, nomad, exploring onchain & exploring the 🌎",
-                mentions: [],
-                channelMentions: ["positivesum"],
-              },
-            },
-            followerCount: 74258,
-            followingCount: 5464,
-          },
-          mint: {
-            totalMinted: 160,
-            maxPerWallet: 1000000000000000000,
-            priceEth: "0.00015",
-            startsAt: 1733437237000,
-            endsAt: null,
-            data: {
-              from: "0xfe819920199392cdd911acdaed84b38f30e27562",
-              to: "0xa24bc6b483eab099e3d877b2a350407d1323f098",
-              data: "0x0d4d1513000000000000000000000000075b108fc0a6426f9dec9a5c18e87eb577d1346a000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000001d4da48b00000000",
-              value: "0x886c98b76000",
-            },
-          },
-          chain: "base",
-        },
-      },
-    } as const,
-    status: 200,
-  },
-];
+}
+
 
 class WarpcastApiClient extends AbstractWarpcastApiClient {
   /**
-   * Get creator rewards leaderboard
+   * Get featured mint information
    */
-  getCreatorRewardsLeaderboard(
-    params: ApiGetCreatorRewardsLeaderboardQueryParams,
+  getFeaturedMint(
+    params?: ApiGetFeaturedMintQueryParams,
     { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {}
   ) {
-    return this.authedGet<ApiGetCreatorRewardsLeaderboard200Response>(
-      "/v1/creator-rewards-leaderboard",
+    return this.get<ApiGetFeaturedMint200Response>(
+      "/v1/featured-mint",
       {
         headers,
         timeout,
-        endpointName: "getCreatorRewardsLeaderboard",
+        endpointName: "getFeaturedMint",
         params,
       }
     );
   }
 
   /**
-   * Get creator rewards metadata
+   * Get featured mint transaction data
    */
-  getCreatorRewardsMetadata({
-    headers,
-    timeout,
-  }: { headers?: RequestHeaders; timeout?: number } = {}) {
-    return this.authedGet<ApiGetCreatorRewardsMetadata200Response>(
-      "/v1/creator-rewards-metadata",
-      {
-        headers,
-        timeout,
-        endpointName: "getCreatorRewardsMetadata",
-      }
-    );
-  }
-
-  /**
-   * Get creator rewards scores for a user
-   */
-  getCreatorRewardsForUser(
-    params: ApiGetCreatorRewardsForUserQueryParams,
+  getFeaturedMintTransaction(
+    params: ApiGetFeaturedMintTransactionQueryParams,
     { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {}
   ) {
-    return this.authedGet<ApiGetCreatorRewardsForUser200Response>(
-      "/v1/creator-rewards-scores-for-user",
+    return this.get<ApiGetFeaturedMintTransaction200Response>(
+      "/v1/featured-mint-transaction",
       {
         headers,
         timeout,
-        endpointName: "getCreatorRewardsForUser",
+        endpointName: "getFeaturedMintTransaction",
         params,
       }
     );
-  }
-
-  /**
-   * Get creator rewards earnings history
-   */
-  getCreatorRewardsEarningsHistory(
-    params: ApiGetCreatorRewardsEarningsHistoryQueryParams,
-    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {}
-  ) {
-    return this.authedGet<ApiGetCreatorRewardsEarningsHistory200Response>(
-      "/v1/creator-rewards-earnings-history",
-      {
-        headers,
-        timeout,
-        endpointName: "getCreatorRewardsEarningsHistory",
-        params,
-      }
-    );
-  }
-
-  /**
-   * Get creator rewards period summary
-   */
-  getCreatorRewardsPeriodSummary(
-    params: ApiGetCreatorRewardsPeriodSummaryQueryParams,
-    { headers, timeout }: { headers?: RequestHeaders; timeout?: number } = {}
-  ) {
-    return this.authedGet<ApiGetCreatorRewardsPeriodSummary200Response>(
-      "/v1/creator-rewards-period-summary",
-      {
-        headers,
-        timeout,
-        endpointName: "getCreatorRewardsPeriodSummary",
-        params,
-      }
-    );
-  }
-
-  getFeaturedMint({
-    stubIndex = 1,
-  }: { headers?: RequestHeaders; timeout?: number; stubIndex?: number } = {}) {
-    return Promise.resolve(STUB_RESPONSES[stubIndex]);
   }
 }
 

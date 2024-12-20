@@ -3,19 +3,23 @@
 import React from "react";
 
 import { Loading } from "@/components/ui/loading";
+import { usePrefetchFeaturedMint } from "@/lib/queries";
 
 function AuthedPrefetchesProvider({ children }: React.PropsWithChildren) {
   const [readyToLoad, setReadyToLoad] = React.useState<boolean>(false);
+  const prefetchFeaturedMint = usePrefetchFeaturedMint();
 
   const prefetch = React.useCallback(async () => {
     await Promise.all([
+      prefetchFeaturedMint(),
+
       // Let's at least make sure to wait for small amount of seconds
       // so the splash dismiss is not too jarring. We can always remove later.
       await new Promise((resolve) => setTimeout(resolve, 1e3 * 2)),
     ]);
 
     setReadyToLoad(true);
-  }, []);
+  }, [prefetchFeaturedMint]);
 
   React.useEffect(() => {
     prefetch();

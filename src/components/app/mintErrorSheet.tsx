@@ -66,7 +66,7 @@ export function MintErrorSheet({
 
           <div
             className={cn(
-              "transition-all",
+              "transition-all hide-scrollbar",
               showDetails
                 ? "overflow-y-scroll max-h-screen"
                 : "overflow-hidden max-h-0"
@@ -74,7 +74,7 @@ export function MintErrorSheet({
           >
             <pre
               onClick={handleCopy}
-              className="text-xs text-muted whitespace-pre-wrap break-words bg-well p-4 rounded-lg relative cursor-pointer group mt-4 hide-scrollbar"
+              className="text-xs text-muted whitespace-pre-wrap break-words bg-well p-4 rounded-lg relative cursor-pointer group mt-4"
             >
               <div className="absolute right-2 top-2 opacity-50 group-hover:opacity-100 transition-opacity">
                 {copied ? (
