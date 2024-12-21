@@ -91,7 +91,7 @@ export function CollectButton({
         </div>
         {isPending ? (
           <AnimatedBorder>
-            <Button className="w-full relative bg-active !text-active-foreground" disabled>
+            <Button className="w-full relative bg-active text-active-foreground" disabled>
               Collecting...
             </Button>
           </AnimatedBorder>

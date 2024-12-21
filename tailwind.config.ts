@@ -33,6 +33,7 @@ export default {
         },
         active: {
           DEFAULT: "var(--active)",
+          foreground: "var(--active-foreground)",
         },
         secondary: {
           DEFAULT: "var(--secondary)",
