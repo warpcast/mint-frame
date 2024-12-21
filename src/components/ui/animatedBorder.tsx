@@ -14,17 +14,17 @@ const AnimatedBorder = ({ children }: AnimatedBorderProps) => {
             <linearGradient id="borderGradient">
               <stop
                 offset="0%"
-                stopColor="var(--action-foreground)"
+                stopColor="var(--active-foreground)"
                 stopOpacity="0"
               />
               <stop
                 offset="50%"
-                stopColor="var(--action-foreground)"
+                stopColor="var(--active-foreground)"
                 stopOpacity="1"
               />
               <stop
                 offset="100%"
-                stopColor="var(--action-foreground)"
+                stopColor="var(--active-foreground)"
                 stopOpacity="0"
               />
             </linearGradient>

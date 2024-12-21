@@ -14,6 +14,7 @@
     --primary: #7867F6;
     --primary-foreground: #FFFFFF;
     --active: #DBD4FF;
+    --active-foreground: #7867F6;
     --secondary: #F3F3F3;
     --secondary-foreground: #24292E;
     --muted: #8B99A4;
@@ -40,6 +41,7 @@
       --primary: #342942;
       --primary-foreground: #FFFFFF;
       --active: #342942;
+      --active-foreground: #7C65C1;
       --secondary: #242426;
       --secondary-foreground: #FAFAFA;
       --muted: #7C8293;
