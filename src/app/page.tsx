@@ -36,7 +36,7 @@ export default function Home() {
         />
         <CollectButton
           timestamp={mint.endsAt}
-          price={mint.priceEth}
+          price={mint.priceUsd}
           onCollect={() => setShowSuccess(true)}
           onError={setError}
         />

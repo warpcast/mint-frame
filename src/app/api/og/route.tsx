@@ -34,7 +34,7 @@ export async function GET() {
       )
     ).then((res) => res.arrayBuffer());
 
-    const imageUrl = mint.imageUrl.replace('?width=250', '?width=1600');
+    const imageUrl = mint.imageUrl.replace("?width=250", "?width=1600");
 
     const imageResponse = new ImageResponse(
       (
@@ -253,20 +253,22 @@ export async function GET() {
     );
 
     const headers = new Headers(imageResponse.headers);
-    headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=59');
+    headers.set(
+      "Cache-Control",
+      "public, s-maxage=300, stale-while-revalidate=59"
+    );
 
     return new Response(imageResponse.body, {
       headers,
       status: imageResponse.status,
       statusText: imageResponse.statusText,
     });
-
   } catch {
     return new Response("Failed to generate image", {
       status: 500,
       headers: {
-        'Cache-Control': 'no-store'
-      }
+        "Cache-Control": "no-store",
+      },
     });
   }
 }

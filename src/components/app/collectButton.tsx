@@ -1,6 +1,5 @@
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
 import React from "react";
-import { formatUnits } from "viem";
 import {
   useAccount,
   useConnect,
@@ -15,10 +14,15 @@ import { useFeaturedMintTransaction } from "@/lib/queries";
 
 interface CollectButtonProps {
   timestamp?: number;
-  price: string;
+  price: number;
   onCollect: () => void;
   onError: (error: string | undefined) => void;
 }
+
+const formatUsdPrice = (priceInCents: number) => {
+  const dollars = (priceInCents / 100).toFixed(2);
+  return `$${dollars}`;
+};
 
 export function CollectButton({
   price,
@@ -40,8 +44,6 @@ export function CollectButton({
   const successHandled = React.useRef(false);
 
   const { fetchTransaction } = useFeaturedMintTransaction();
-
-  const formattedPrice = formatUnits(BigInt(price), 18);
 
   React.useEffect(() => {
     if (isSuccess && !successHandled.current) {
@@ -93,12 +95,15 @@ export function CollectButton({
         <div className="flex justify-between items-center mb-1 text-sm">
           <span className="text-muted text-sm">Cost</span>
           <span className="text-foreground font-medium">
-            {formattedPrice} ETH
+            {formatUsdPrice(price)}
           </span>
         </div>
         {isPending ? (
           <AnimatedBorder>
-            <Button className="w-full relative bg-active text-active-foreground" disabled>
+            <Button
+              className="w-full relative bg-active text-active-foreground"
+              disabled
+            >
               Collecting...
             </Button>
           </AnimatedBorder>

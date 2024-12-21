@@ -676,6 +676,7 @@ export type ApiFeaturedMint = {
   tokenId?: string,
   isMinting: boolean,
   priceEth: string,
+  priceUsd: number,
   startsAt?: ApiTimestampMillis,
   endsAt?: ApiTimestampMillis,
 }
