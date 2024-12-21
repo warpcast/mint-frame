@@ -77,22 +77,26 @@ export function CollectButton({
   };
 
   return (
-    <>
-      <div className="sticky bottom-0 left-0 right-0 pb-[env(safe-area-inset-bottom)] bg-card">
-        <div className="mb-4">
-          {isPending ? (
-            <AnimatedBorder>
-              <Button className="w-full relative" disabled>
-                Collecting...
-              </Button>
-            </AnimatedBorder>
-          ) : (
-            <Button className="w-full" onClick={handleClick}>
-              {isConnected ? `Collect for ${formattedPrice} ETH` : "Connect"}
-            </Button>
-          )}
+    <div className="sticky bottom-0 left-0 right-0 pb-[env(safe-area-inset-bottom)] bg-card border-t border-border">
+      <div className="pb-4 px-4 pt-2">
+        <div className="flex justify-between items-center mb-1 text-sm">
+          <span className="text-muted text-sm">Cost</span>
+          <span className="text-foreground font-medium">
+            {formattedPrice} ETH
+          </span>
         </div>
+        {isPending ? (
+          <AnimatedBorder>
+            <Button className="w-full relative bg-active" disabled>
+              Collecting...
+            </Button>
+          </AnimatedBorder>
+        ) : (
+          <Button className="w-full" onClick={handleClick}>
+            {isConnected ? "Collect" : "Connect"}
+          </Button>
+        )}
       </div>
-    </>
+    </div>
   );
 }

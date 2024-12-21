@@ -10,7 +10,7 @@ import {
   DrawerOverlay,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { getShareUrl } from "@/lib/share";
+import WowowImage from "@/img/wowow.png";
 
 interface MintSuccessSheetProps {
   isOpen: boolean;
@@ -23,12 +23,11 @@ export function MintSuccessSheet({
   isOpen,
   onClose,
   name,
-  imageUrl
+  imageUrl,
 }: MintSuccessSheetProps) {
-  const handleShare = useCallback(() => {
-    const url = getShareUrl({ name });
-    sdk.actions.openUrl(url);
-  }, [name]);
+  const handleAdd = useCallback(() => {
+    sdk.actions.addFrame();
+  }, []);
 
   return (
     <Drawer open={isOpen} onClose={onClose}>
@@ -36,7 +35,7 @@ export function MintSuccessSheet({
       <DrawerContent className="bg-card [&>svg]:hidden">
         <DrawerTitle className="sr-only">Collection Successful</DrawerTitle>
 
-        <div className="flex flex-col items-center pt-4 pb-1">
+        <div className="flex flex-col items-center pt-4 pb-8">
           <div className="flex items-center gap-1">
             <CheckCircle2
               className="text-[#43B748]"
@@ -48,28 +47,55 @@ export function MintSuccessSheet({
         </div>
 
         <div className="max-w-[272px] mx-auto w-full">
-          <div className="bg-mat rounded-xl p-2 shadow mb-10">
+          <div className="bg-mat rounded-xl p-2 shadow mb-4">
             <div className="relative aspect-square w-full rounded-lg overflow-hidden">
-              <Image
-                src={imageUrl}
-                alt={name}
-                fill
-                className="object-cover"
-              />
+              <Image src={imageUrl} alt={name} fill className="object-cover" />
             </div>
           </div>
         </div>
 
-        <div className="px-4 pb-[env(safe-area-inset-bottom)] mb-8">
-          <div className="flex gap-3">
-            <Button variant="secondary" className="flex-1" onClick={onClose}>
-              Done
-            </Button>
-            <Button variant="default" className="flex-1" onClick={handleShare}>
-              Share
+        <div className="relative">
+          <div className="absolute inset-4">
+            <Image
+              src={WowowImage}
+              alt="Background pattern"
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          <div className="relative px-4 py-6 flex flex-col items-center justify-center gap-4 min-h-[240px]">
+            <h2 className="text-xl font-semibold text-foreground text-center">
+              Never miss featured mints!
+            </h2>
+
+            <Button
+              onClick={handleAdd}
+              variant="secondary"
+              className="flex items-center w-full w-[284px] h-[56px] bg-[#f7f7f7] hover:bg-[#f0f0f0] transition-colors rounded-[8px] p-2 gap-1"
+            >
+              <div className="h-[40px] w-[40px] relative rounded-[8px] overflow-hidden">
+                <Image
+                  src="/app.png"
+                  alt="Warpcast app icon"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              <div className="flex flex-col flex-1 -space-y-1 text-left">
+                <span className="font-sm text-black font-medium">Mints</span>
+                <span className="text-sm text-[#8B99A4]">by Warpcast</span>
+              </div>
+
+              <div className="rounded-full bg-[#5336E2] hover:bg-[5336E2]/90 w-[52px] h-[26px] text-white text-sm flex items-center justify-center">
+                Add
+              </div>
             </Button>
           </div>
         </div>
+
+        <div className="pb-[env(safe-area-inset-bottom)]" />
       </DrawerContent>
     </Drawer>
   );

@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen flex flex-col">
       <ArtworkImage imageUrl={mint.imageUrl} name={mint.name} />
-      <Card className="flex flex-col p-4 -mt-6 relative z-1 rounded-t-xl rounded-b-none flex-grow">
+      <Card className="flex flex-col -mt-6 relative z-1 flex-grow">
         <ArtworkInfo
           name={mint.name}
           creator={mint.creator}

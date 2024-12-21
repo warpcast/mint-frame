@@ -16,7 +16,7 @@ export function ArtworkInfo({ name, creator, description }: ArtworkInfoProps) {
   };
 
   return (
-    <div className="flex flex-col flex-grow">
+    <div className="flex flex-col flex-grow p-4">
       <div className="flex flex-row items-start justify-between mb-4">
         <div className="space-y-1">
           <h1 className="text-xl font-bold">{name}</h1>
@@ -33,7 +33,7 @@ export function ArtworkInfo({ name, creator, description }: ArtworkInfoProps) {
                 </Avatar>
               )}
               <span
-                className="text-sm text-primary-foreground hover:underline cursor-pointer"
+                className="text-sm text-action-foreground hover:underline cursor-pointer"
                 onClick={handleUsernameClick}
               >
                 {creator.username}

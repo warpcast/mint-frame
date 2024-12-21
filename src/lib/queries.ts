@@ -1,7 +1,4 @@
-import {
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { api, ApiEthereumAddress } from "./api";
@@ -20,7 +17,6 @@ const usePrefetchFeaturedMint = () => {
   }, [qc]);
 };
 
-
 const useFeaturedMint = () => {
   return useSuspenseQuery({
     queryKey: ["featuredMint"],
@@ -37,14 +33,10 @@ const useFeaturedMintTransaction = () => {
   return {
     fetchTransaction: async (address: ApiEthereumAddress) => {
       const response = await api.getFeaturedMintTransaction({ address });
-      queryClient.setQueryData(['featuredMintTx'], response.data);
+      queryClient.setQueryData(["featuredMintTx"], response.data);
       return response.data;
-    }
+    },
   };
 };
 
-export {
-  useFeaturedMint,
-  useFeaturedMintTransaction,
-  usePrefetchFeaturedMint
-};
+export { useFeaturedMint, useFeaturedMintTransaction, usePrefetchFeaturedMint };
