@@ -47,11 +47,16 @@ export function CollectButton({
     if (isSuccess && !successHandled.current) {
       successHandled.current = true;
       onCollect();
+      setHash(undefined);
+      successHandled.current = false;
     }
   }, [isSuccess, onCollect]);
 
   const handleClick = async () => {
     try {
+      setHash(undefined);
+      successHandled.current = false;
+
       if (!isConnected || !address) {
         connect({ connector: farcasterFrame() });
         return;
@@ -75,6 +80,8 @@ export function CollectButton({
           error instanceof Error ? error.message : "Something went wrong."
         );
       }
+      setHash(undefined);
+      successHandled.current = false;
     } finally {
       setIsLoadingTxData(false);
     }
