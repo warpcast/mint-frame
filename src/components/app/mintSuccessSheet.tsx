@@ -26,8 +26,9 @@ export function MintSuccessSheet({
   imageUrl,
 }: MintSuccessSheetProps) {
   const handleAdd = useCallback(() => {
+    onClose();
     sdk.actions.addFrame();
-  }, []);
+  }, [onClose]);
 
   return (
     <Drawer open={isOpen} onClose={onClose}>
