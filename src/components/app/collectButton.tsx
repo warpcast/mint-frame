@@ -29,12 +29,13 @@ export function CollectButton({
   const { connect } = useConnect();
   const { sendTransactionAsync, isPending: isSending } = useSendTransaction();
   const [hash, setHash] = React.useState<`0x${string}`>();
+  const [isLoadingTxData, setIsLoadingTxData] = React.useState(false);
 
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
 
-  const isPending = isSending || isConfirming;
+  const isPending = isLoadingTxData || isSending || isConfirming;
 
   const successHandled = React.useRef(false);
 
@@ -56,6 +57,7 @@ export function CollectButton({
         return;
       }
 
+      setIsLoadingTxData(true);
       const {
         result: { tx },
       } = await fetchTransaction(address);
@@ -73,6 +75,8 @@ export function CollectButton({
           error instanceof Error ? error.message : "Something went wrong."
         );
       }
+    } finally {
+      setIsLoadingTxData(false);
     }
   };
 
