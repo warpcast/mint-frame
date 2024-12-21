@@ -10,7 +10,7 @@
     "imageUrl": "https://wc-featured-mint.vercel.app/api/og",
     "buttonTitle": "Collect",
     "iconUrl": "https://wc-featured-mint.vercel.app/app.png",
-    "splashImageUrl": "https://wc-featured-mint.vercel.app/logo.png",
+    "splashImageUrl": "https://wc-featured-mint.vercel.app/splash.png",
     "splashBackgroundColor": "#ffffff",
     "homeUrl": "https://wc-featured-mint.vercel.app/"
   }
