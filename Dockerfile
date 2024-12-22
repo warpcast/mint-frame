@@ -6,7 +6,8 @@ RUN bun run build
 
 FROM oven/bun:latest
 WORKDIR /app
-COPY --from=builder /app . 
+RUN apt-get update && apt-get install -y curl # For healthchecks
+COPY --from=builder /app .
 ENV NODE_ENV=production
 EXPOSE 3000
 CMD ["bun", "run", "start"]
