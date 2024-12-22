@@ -43,7 +43,7 @@ export function ArtworkInfo({ name, creator, description }: ArtworkInfoProps) {
               <span className="text-sm text-muted">on</span>
               <Avatar className="h-4 w-4 bg-secondary rounded-full">
                 <AvatarImage
-                  src="https://wc-featured-mint.vercel.app/base-logo.png"
+                  src="https://mint.warpcast.com/base-logo.png"
                   alt="Base"
                   width={16}
                 />

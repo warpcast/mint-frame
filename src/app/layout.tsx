@@ -12,9 +12,9 @@ const frame = {
     action: {
       type: "launch_frame",
       name: "Mints",
-      url: "https://wc-featured-mint.vercel.app/",
-      iconImageUrl: `https://wc-featured-mint.vercel.app/app.png`,
-      splashImageUrl: `https://wc-featured-mint.vercel.app/splash.png`,
+      url: "https://mint.warpcast.com/",
+      iconImageUrl: "https://mint.warpcast.com/app.png",
+      splashImageUrl: "https://mint.warpcast.com/splash.png",
       splashBackgroundColor: "#ffffff",
     },
   },
@@ -22,12 +22,12 @@ const frame = {
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    metadataBase: new URL("https://wc-featured-mint.vercel.app/"),
+    metadataBase: new URL("https://mint.warpcast.com/"),
     title: "Mints",
     openGraph: {
       title: "Warpcast",
       description: "Mints",
-      images: `https://wc-featured-mint.vercel.app/api/og`,
+      images: "https://wc-featured-mint.vercel.app/api/og",
     },
     other: {
       "fc:frame": JSON.stringify(frame),

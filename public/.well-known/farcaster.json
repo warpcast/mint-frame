@@ -9,9 +9,9 @@
     "name": "Mints",
     "imageUrl": "https://wc-featured-mint.vercel.app/api/og",
     "buttonTitle": "Collect",
-    "iconUrl": "https://wc-featured-mint.vercel.app/app.png",
-    "splashImageUrl": "https://wc-featured-mint.vercel.app/splash.png",
+    "iconUrl": "https://mint.warpcast.com/app.png",
+    "splashImageUrl": "https://mint.warpcast.com/splash.png",
     "splashBackgroundColor": "#ffffff",
-    "homeUrl": "https://wc-featured-mint.vercel.app/"
+    "homeUrl": "https://mint.warpcast.com/"
   }
 }

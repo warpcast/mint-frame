@@ -10,5 +10,5 @@ export function getShareUrl({
     ? `I just collected "Name of Work" by handle`
     : `I just collected "Name of Work"`;
 
-  return `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent("https://wc-featured-mint.vercel.app/")}`;
+  return `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent("https://mint.warpcast.com/")}`;
 }
