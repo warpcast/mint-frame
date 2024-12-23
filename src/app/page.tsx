@@ -17,7 +17,7 @@ export default function Home() {
   const { data } = useFeaturedMint();
   const { mint } = data.result;
 
-  const [showSuccess, setShowSuccess] = React.useState(true);
+  const [showSuccess, setShowSuccess] = React.useState(false);
   const [error, setError] = React.useState<string>();
 
   useEffect(() => {
