@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudflare/pages-plugin-vercel-og": "^0.1.2",
     "@farcaster/frame-sdk": "^0.0.16",
     "@farcaster/frame-wagmi-connector": "^0.0.6",
     "@radix-ui/react-avatar": "^1.1.1",
@@ -30,6 +31,7 @@
     "wagmi": "^2.14.3"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241218.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

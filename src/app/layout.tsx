@@ -6,7 +6,7 @@ import { Providers } from "@/providers/Providers";
 
 const frame = {
   version: "next",
-  imageUrl: `https://wc-featured-mint.vercel.app/api/og`,
+  imageUrl: "https://mint-frame-opengraph.pages.dev/",
   button: {
     title: "Collect",
     action: {
@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: "Warpcast",
       description: "Mints",
-      images: "https://wc-featured-mint.vercel.app/api/og",
+      images: "https://mint-frame-opengraph.pages.dev/",
     },
     other: {
       "fc:frame": JSON.stringify(frame),

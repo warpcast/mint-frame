@@ -1,22 +1,15 @@
 {
     "compilerOptions": {
-      "esModuleInterop": true,
-      "allowJs": true,
-      "skipLibCheck": true,
-      "resolveJsonModule": true,
-      "moduleDetection": "force",
-      "isolatedModules": true,
-      "strict": true,
-      "noUncheckedIndexedAccess": true,
-      "lib": ["ESNext"],
-      "incremental": true,
-      "newLine": "lf",
-      "moduleResolution": "NodeNext",
-      "module": "NodeNext",
       "target": "ESNext",
-      "types": ["@cloudflare/workers-types"],
-      "customConditions": ["workerd"],
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "lib": ["ESNext"],
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "isolatedModules": true,
       "noEmit": true,
-      "jsx": "react-jsx"
+      "jsx": "react-jsx",
+      "types": ["@cloudflare/workers-types"]
     }
   }

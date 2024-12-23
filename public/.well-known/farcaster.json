@@ -7,7 +7,7 @@
   "frame": {
     "version": "1",
     "name": "Mints",
-    "imageUrl": "https://wc-featured-mint.vercel.app/api/og",
+    "imageUrl": "https://mint-frame-opengraph.pages.dev/",
     "buttonTitle": "Collect",
     "iconUrl": "https://mint.warpcast.com/app.png",
     "splashImageUrl": "https://mint.warpcast.com/splash.png",
