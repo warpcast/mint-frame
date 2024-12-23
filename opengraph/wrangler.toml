@@ -1,7 +1,0 @@
-name = "mint-frame-opengraph"
-compatibility_date = "2024-12-22"
-pages_build_output_dir = "."
-
-[vars]
-API_URL = "https://api.warpcast.com"
-PUBLIC_URL = "https://mint.warpcast.com"

@@ -1,55 +1,38 @@
 /* eslint-disable @next/next/no-img-element */
-import { ImageResponse } from "@cloudflare/pages-plugin-vercel-og/api";
-import type { EventContext } from "@cloudflare/workers-types";
+import { ImageResponse } from "@vercel/og";
 
-interface Env {
-  API_URL: string;
-  PUBLIC_URL: string;
-}
+import { api } from "@/lib/api";
 
-type ApiFeaturedMint = {
-  name: string;
-  imageUrl: string;
-  description?: string;
-  creator: {
-    fid: number;
-    username?: string;
-    displayName: string;
-    pfp?: {
-      url: string;
-    };
-  };
-  isMinting: boolean;
-};
+export const runtime = "edge";
 
-export const onRequest = async (
-  context: EventContext<Env, string, unknown>
-) => {
+export async function GET() {
   try {
-    const [
-      {
+    const {
+      data: {
         result: { mint },
       },
-      interRegular,
-      interMedium,
-      interSemiBold,
-    ] = await Promise.all([
-      fetch(`${context.env.API_URL}/v1/featured-mint`).then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch mint data");
-        }
-        return response.json();
-      }) as Promise<{ result: { mint: ApiFeaturedMint } }>,
-      fetch(new URL(`${context.env.PUBLIC_URL}/fonts/Inter-Regular.ttf`)).then(
-        (res) => res.arrayBuffer()
-      ),
-      fetch(new URL(`${context.env.PUBLIC_URL}/fonts/Inter-Medium.ttf`)).then(
-        (res) => res.arrayBuffer()
-      ),
-      fetch(new URL(`${context.env.PUBLIC_URL}/fonts/Inter-SemiBold.ttf`)).then(
-        (res) => res.arrayBuffer()
-      ),
-    ]);
+    } = await api.getFeaturedMint();
+
+    const interRegular = await fetch(
+      new URL(
+        "https://wc-featured-mint.vercel.app/fonts/Inter-Regular.ttf",
+        import.meta.url
+      )
+    ).then((res) => res.arrayBuffer());
+
+    const interMedium = await fetch(
+      new URL(
+        "https://wc-featured-mint.vercel.app/fonts/Inter-Medium.ttf",
+        import.meta.url
+      )
+    ).then((res) => res.arrayBuffer());
+
+    const interSemiBold = await fetch(
+      new URL(
+        "https://wc-featured-mint.vercel.app/fonts/Inter-SemiBold.ttf",
+        import.meta.url
+      )
+    ).then((res) => res.arrayBuffer());
 
     const imageUrl = mint.imageUrl.replace("?width=250", "?width=1600");
 
@@ -213,8 +196,9 @@ export const onRequest = async (
                   {mint.creator.username}
                 </span>
                 <span>on</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={`${context.env.PUBLIC_URL}/base-logo.png`}
+                  src="https://wc-featured-mint.vercel.app/base-logo.png"
                   alt="Base"
                   width="48"
                   height="48"
@@ -287,4 +271,4 @@ export const onRequest = async (
       },
     });
   }
-};
+}
