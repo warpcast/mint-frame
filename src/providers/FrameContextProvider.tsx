@@ -23,6 +23,7 @@ const FAKE_FRAME_CONTEXT: FrameContext | undefined =
 type FrameContextProviderContextValue = {
   fid: number;
   pfpUrl: string | undefined;
+  frameAdded: boolean;
 };
 
 const FrameContextProviderContext =
@@ -67,7 +68,7 @@ function FrameContextProvider({ children }: React.PropsWithChildren) {
 
   return (
     <FrameContextProviderContext.Provider
-      value={{ fid: frameContext.user.fid, pfpUrl: frameContext.user.pfpUrl }}
+      value={{ fid: frameContext.user.fid, pfpUrl: frameContext.user.pfpUrl, frameAdded: frameContext.client.added }}
     >
       {children}
     </FrameContextProviderContext.Provider>
