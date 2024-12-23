@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "esModuleInterop": true,
+      "allowJs": true,
+      "skipLibCheck": true,
+      "resolveJsonModule": true,
+      "moduleDetection": "force",
+      "isolatedModules": true,
+      "strict": true,
+      "noUncheckedIndexedAccess": true,
+      "lib": ["ESNext"],
+      "incremental": true,
+      "newLine": "lf",
+      "moduleResolution": "NodeNext",
+      "module": "NodeNext",
+      "target": "ESNext",
+      "types": ["@cloudflare/workers-types"],
+      "customConditions": ["workerd"],
+      "noEmit": true,
+      "jsx": "react-jsx"
+    }
+  }
