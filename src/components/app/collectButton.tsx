@@ -73,6 +73,7 @@ export function CollectButton({
         to: tx.to,
         value: BigInt(tx.value),
         data: tx.data,
+        chainId: 8453
       });
 
       setHash(hash);
