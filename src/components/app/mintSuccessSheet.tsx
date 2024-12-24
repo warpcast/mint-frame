@@ -61,8 +61,8 @@ export function MintSuccessSheet({
         {frameAdded ? (
           <div className="mb-8" />
         ) : (
-          <div className="relative">
-            <div className="absolute inset-4">
+          <div className="relative w-[365px] mx-auto">
+            <div className="absolute inset-4 pb-4">
               <Image
                 src={WowowImage}
                 alt="Background pattern"
@@ -71,7 +71,7 @@ export function MintSuccessSheet({
               />
             </div>
 
-            <div className="relative px-4 py-6 flex flex-col items-center justify-center min-h-[240px]">
+            <div className="relative px-8 flex flex-col items-center justify-center h-[230px]">
               <h2 className="text-xl font-semibold text-foreground text-center">
                 Never miss featured mints!
               </h2>
@@ -79,7 +79,7 @@ export function MintSuccessSheet({
               <Button
                 onClick={handleAdd}
                 variant="secondary"
-                className="flex items-center w-full h-[60px] bg-[#f7f7f7] hover:bg-[#f0f0f0] transition-colors rounded-[8px] p-2 gap-1"
+                className="flex items-center w-full max-w-[354px] h-[60px] bg-[#f7f7f7] hover:bg-[#f0f0f0] transition-colors rounded-[8px] p-2 gap-1 mb-4"
               >
                 <div className="h-[42px] w-[42px] relative rounded-[8px] overflow-hidden">
                   <Image

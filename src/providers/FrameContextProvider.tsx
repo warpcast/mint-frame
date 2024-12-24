@@ -1,4 +1,4 @@
-import sdk, { FrameContext } from "@farcaster/frame-sdk";
+import sdk, { FrameContext, SafeAreaInsets } from "@farcaster/frame-sdk";
 import React from "react";
 
 import { Loading } from "@/components/ui/loading";
@@ -14,6 +14,12 @@ const FAKE_FRAME_CONTEXT: FrameContext | undefined =
         client: {
           clientFid: 9152,
           added: false,
+          safeAreaInsets: {
+            bottom: 0,
+            top: 0,
+            left: 0,
+            right: 0
+          }
         },
         // @ts-ignore-next-line
         fakePayload: true,
@@ -24,6 +30,7 @@ type FrameContextProviderContextValue = {
   fid: number;
   pfpUrl: string | undefined;
   frameAdded: boolean;
+  safeAreaInsets?: SafeAreaInsets
 };
 
 const FrameContextProviderContext =
@@ -68,7 +75,7 @@ function FrameContextProvider({ children }: React.PropsWithChildren) {
 
   return (
     <FrameContextProviderContext.Provider
-      value={{ fid: frameContext.user.fid, pfpUrl: frameContext.user.pfpUrl, frameAdded: frameContext.client.added }}
+      value={{ fid: frameContext.user.fid, pfpUrl: frameContext.user.pfpUrl, frameAdded: frameContext.client.added, safeAreaInsets: frameContext.client.safeAreaInsets }}
     >
       {children}
     </FrameContextProviderContext.Provider>
@@ -76,7 +83,13 @@ function FrameContextProvider({ children }: React.PropsWithChildren) {
 }
 
 export const useViewer = () => {
-  return React.useContext(FrameContextProviderContext);
+  const { fid, pfpUrl, frameAdded } = React.useContext(FrameContextProviderContext);
+  return { fid, pfpUrl, frameAdded };
+};
+
+export const useSafeArea = () => {
+  const { safeAreaInsets } = React.useContext(FrameContextProviderContext);
+  return { safeAreaInsets };
 };
 
 export { FrameContextProvider };
