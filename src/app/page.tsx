@@ -33,10 +33,12 @@ export default function Home() {
           creator={mint.creator}
           chain={mint.chain}
           description={mint.description}
+          isMinting={mint.isMinting}
         />
         <CollectButton
           timestamp={mint.endsAt}
           price={mint.priceUsd}
+          isMinting={mint.isMinting}
           onCollect={() => setShowSuccess(true)}
           onError={setError}
         />

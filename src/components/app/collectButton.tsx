@@ -1,3 +1,4 @@
+import { sdk } from '@farcaster/frame-sdk';
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
 import React from "react";
 import {
@@ -11,12 +12,14 @@ import { AnimatedBorder } from "@/components/ui/animatedBorder";
 import { Button } from "@/components/ui/button";
 import { isUserRejectionError } from "@/lib/errors";
 import { useFeaturedMintTransaction } from "@/lib/queries";
+import { useViewer } from "@/providers/FrameContextProvider";
 
 interface CollectButtonProps {
   timestamp?: number;
   price: number;
   onCollect: () => void;
   onError: (error: string | undefined) => void;
+  isMinting: boolean;
 }
 
 const formatUsdPrice = (priceInCents: number) => {
@@ -28,12 +31,14 @@ export function CollectButton({
   price,
   onCollect,
   onError,
+  isMinting,
 }: CollectButtonProps) {
   const { isConnected, address } = useAccount();
   const { connect } = useConnect();
   const { sendTransactionAsync, isPending: isSending } = useSendTransaction();
   const [hash, setHash] = React.useState<`0x${string}`>();
   const [isLoadingTxData, setIsLoadingTxData] = React.useState(false);
+  const { frameAdded } = useViewer();
 
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
@@ -56,6 +61,11 @@ export function CollectButton({
 
   const handleClick = async () => {
     try {
+      if (!isMinting) {
+        sdk.actions.addFrame();
+        return;
+      }
+
       setHash(undefined);
       successHandled.current = false;
 
@@ -93,24 +103,32 @@ export function CollectButton({
   return (
     <div className="sticky bottom-0 left-0 right-0 pb-[env(safe-area-inset-bottom)] bg-card border-t border-border">
       <div className="pb-4 px-4 pt-2">
-        <div className="flex justify-between items-center mb-1 text-sm">
-          <span className="text-muted text-sm">Cost</span>
-          <span className="text-foreground font-medium">
-            {formatUsdPrice(price)}
-          </span>
-        </div>
+        {isMinting && (
+          <div className="flex justify-between items-center mb-1 text-sm">
+            <span className="text-muted text-sm">Cost</span>
+            <span className="text-foreground font-medium">
+              {formatUsdPrice(price)}
+            </span>
+          </div>
+        )}
         {isPending ? (
           <AnimatedBorder>
             <Button
               className="w-full relative bg-active text-active-foreground"
               disabled
             >
-              Collecting...
+              {isMinting ? "Collecting..." : "Adding..."}
             </Button>
           </AnimatedBorder>
         ) : (
-          <Button className="w-full" onClick={handleClick}>
-            {isConnected ? "Collect" : "Connect"}
+          <Button
+            className="w-full"
+            onClick={handleClick}
+            disabled={!isMinting && frameAdded}
+          >
+            {!isConnected && isMinting ? "Connect" :
+              isMinting ? "Collect" :
+              frameAdded ? "Added" : "Add Frame"}
           </Button>
         )}
       </div>

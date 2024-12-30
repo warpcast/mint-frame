@@ -8,9 +8,10 @@ interface ArtworkInfoProps {
   creator: ApiUserMinimal;
   chain: ApiChain;
   description?: string;
+  isMinting: boolean;
 }
 
-export function ArtworkInfo({ name, creator, description }: ArtworkInfoProps) {
+export function ArtworkInfo({ name, creator, description, isMinting }: ArtworkInfoProps) {
   const handleUsernameClick = () => {
     sdk.actions.openUrl(`https://warpcast.com/${creator.username}`);
   };
@@ -54,7 +55,9 @@ export function ArtworkInfo({ name, creator, description }: ArtworkInfoProps) {
         </div>
       </div>
 
-      <p className="text-sm mb-4">{description}</p>
+      <p className="text-sm mb-4">
+        {isMinting ? description : ("This mint is closed. Don't miss the next one! Add this frame to get featured mint notifications.")}
+      </p>
     </div>
   );
 }
