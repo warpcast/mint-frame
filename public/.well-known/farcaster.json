@@ -12,6 +12,7 @@
     "iconUrl": "https://mint.warpcast.com/app.png",
     "splashImageUrl": "https://mint.warpcast.com/splash.png",
     "splashBackgroundColor": "#ffffff",
-    "homeUrl": "https://mint.warpcast.com/"
+    "homeUrl": "https://mint.warpcast.com/",
+    "webhookUrl": "https://client.warpcast.com/v1/featured-mint-frame-webhook"
   }
 }
