@@ -1,9 +1,9 @@
-import sdk, { FrameContext, SafeAreaInsets } from "@farcaster/frame-sdk";
+import sdk, { Context } from "@farcaster/frame-sdk";
 import React from "react";
 
 import { Loading } from "@/components/ui/loading";
 
-const FAKE_FRAME_CONTEXT: FrameContext | undefined =
+const FAKE_FRAME_CONTEXT: Context.FrameContext | undefined =
   process.env.NODE_ENV === "development"
     ? {
         user: {
@@ -30,7 +30,7 @@ type FrameContextProviderContextValue = {
   fid: number;
   pfpUrl: string | undefined;
   frameAdded: boolean;
-  safeAreaInsets?: SafeAreaInsets
+  safeAreaInsets?: Context.SafeAreaInsets;
 };
 
 const FrameContextProviderContext =
@@ -41,12 +41,10 @@ function FrameContextProvider({ children }: React.PropsWithChildren) {
     React.useState<boolean>(false);
 
 
-  const [frameContext, setFrameContext] = React.useState<
-    FrameContext | undefined
-  >(FAKE_FRAME_CONTEXT);
+  const [frameContext, setFrameContext] = React.useState<Context.FrameContext | undefined>(FAKE_FRAME_CONTEXT);
 
   const checkFrameContext = React.useCallback(async () => {
-    const ctx: FrameContext = await sdk.context;
+    const ctx: Context.FrameContext = await sdk.context;
 
     if (
       typeof ctx !== "undefined" &&

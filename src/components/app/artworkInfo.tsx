@@ -13,7 +13,7 @@ interface ArtworkInfoProps {
 
 export function ArtworkInfo({ name, creator, description, isMinting }: ArtworkInfoProps) {
   const handleUsernameClick = () => {
-    sdk.actions.openUrl(`https://warpcast.com/${creator.username}`);
+    sdk.actions.viewProfile({ fid: creator.fid });
   };
 
   return (
