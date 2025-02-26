@@ -3,7 +3,7 @@ import { useCallback } from "react";
 
 import { api, ApiEthereumAddress, ApiGetFeaturedMintQueryParams } from "./api";
 
-const usePrefetchFeaturedMint = (params: ApiGetFeaturedMintQueryParams) => {
+const usePrefetchFeaturedMint = (params: ApiGetFeaturedMintQueryParams = {}) => {
   const qc = useQueryClient();
 
   return useCallback(() => {
@@ -17,7 +17,7 @@ const usePrefetchFeaturedMint = (params: ApiGetFeaturedMintQueryParams) => {
   }, [qc, params]);
 };
 
-const useFeaturedMint = (params: ApiGetFeaturedMintQueryParams) => {
+const useFeaturedMint = (params: ApiGetFeaturedMintQueryParams = {}) => {
   return useSuspenseQuery({
     queryKey: ["featuredMint"],
     queryFn: async () => {
