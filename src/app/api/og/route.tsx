@@ -11,7 +11,7 @@ export async function GET() {
       data: {
         result: { mint },
       },
-    } = await api.getFeaturedMint({ collection: "0xb9e4c1ee1ea774cfcba8d9c5bb5e872a53594093" });
+    } = await api.getFeaturedMint();
 
     const interRegular = await fetch(
       new URL(

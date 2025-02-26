@@ -14,7 +14,7 @@ import { useFrameSplash } from "@/providers/FrameSplashProvider";
 // eslint-disable-next-line import/no-default-export
 export default function Home() {
   const { dismiss } = useFrameSplash();
-  const { data } = useFeaturedMint({ collection: "0xb9e4c1ee1ea774cfcba8d9c5bb5e872a53594093" });
+  const { data } = useFeaturedMint();
   const { mint } = data.result;
 
   const [showSuccess, setShowSuccess] = React.useState(false);
