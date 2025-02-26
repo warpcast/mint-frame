@@ -55,12 +55,13 @@ export async function GET() {
             alt={mint.name}
             style={{
               position: "absolute",
-              bottom: 0,
+              bottom: 0, // Align bottom with container
               left: 0,
-              width: "100%",
+              width: "100%", // Full width (1236px)
+              // For 1:1 aspect ratio, height should be same as width (1236px)
               height: "1236px",
-              objectFit: "cover",
-              objectPosition: "bottom",
+              objectFit: "cover", // Use cover but with bottom alignment
+              objectPosition: "bottom", // Align with bottom
             }}
           />
 
@@ -70,7 +71,7 @@ export async function GET() {
               style={{
                 position: "absolute",
                 top: "24px",
-                right: "24px",
+                right: "24px", // Aligned with info box right margin
                 background: "rgba(0, 0, 0, 0.5)",
                 display: "flex",
                 padding: "12px 24px",
@@ -122,7 +123,7 @@ export async function GET() {
               position: "absolute",
               bottom: "24px",
               left: "24px",
-              width: "1176px",
+              width: "1188px",
               height: "204px",
               padding: "24px",
               display: "flex",
@@ -131,7 +132,7 @@ export async function GET() {
               flexShrink: 0,
               borderRadius: "36px",
               background: "rgba(0, 0, 0, 0.70)",
-              zIndex: 10,
+              zIndex: 10, // Ensure info box appears above image
             }}
           >
             <div
