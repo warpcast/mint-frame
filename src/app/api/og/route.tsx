@@ -46,19 +46,21 @@ export async function GET() {
             display: "flex",
             flexDirection: "column",
             backgroundColor: "black",
+            overflow: "hidden",
           }}
         >
-          {/* Background Image */}
+          {/* Background Image - Aligned for 1:1 aspect ratio */}
           <img
             src={imageUrl}
             alt={mint.name}
             style={{
               position: "absolute",
-              top: 0,
+              bottom: 0,
               left: 0,
               width: "100%",
-              height: "100%",
+              height: "1236px",
               objectFit: "cover",
+              objectPosition: "bottom",
             }}
           />
 
@@ -128,7 +130,8 @@ export async function GET() {
               gap: "30px",
               flexShrink: 0,
               borderRadius: "36px",
-              background: "rgba(0, 0, 0, 0.50)",
+              background: "rgba(0, 0, 0, 0.70)",
+              zIndex: 10,
             }}
           >
             <div
