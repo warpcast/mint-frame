@@ -7,7 +7,7 @@ import { usePrefetchFeaturedMint } from "@/lib/queries";
 
 function AuthedPrefetchesProvider({ children }: React.PropsWithChildren) {
   const [readyToLoad, setReadyToLoad] = React.useState<boolean>(false);
-  const prefetchFeaturedMint = usePrefetchFeaturedMint();
+  const prefetchFeaturedMint = usePrefetchFeaturedMint({ collection: "0xb9e4c1ee1ea774cfcba8d9c5bb5e872a53594093" });
 
   const prefetch = React.useCallback(async () => {
     await Promise.all([
