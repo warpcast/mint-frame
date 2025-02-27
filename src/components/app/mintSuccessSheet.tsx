@@ -64,7 +64,7 @@ export function MintSuccessSheet({
           </div>
         </div>
 
-        {!frameAdded ? (
+        {frameAdded ? (
           <div className="mb-8 px-4">
             <Button className="w-full" onClick={handleShare}>Share</Button>
           </div>
