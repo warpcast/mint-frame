@@ -7,8 +7,8 @@ export function getShareUrl({
 }) {
   name;
   const text = username
-    ? `I just collected "Name of Work" by handle`
-    : `I just collected "Name of Work"`;
+    ? `I just collected "${name}" by @${username}`
+    : `I just collected "${name}"`;
 
   return `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent("https://mint.warpcast.com/")}`;
 }

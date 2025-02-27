@@ -11,6 +11,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import WowowImage from "@/img/wowow.png";
+import { getShareUrl } from "@/lib/share";
 import { useViewer } from "@/providers/FrameContextProvider";
 
 interface MintSuccessSheetProps {
@@ -32,6 +33,11 @@ export function MintSuccessSheet({
   }, [onClose]);
 
   const { frameAdded } = useViewer();
+
+  const handleShare = useCallback(() => {
+    const url = getShareUrl({ name });
+    sdk.actions.openUrl(url);
+  }, [name]);
 
   return (
     <Drawer open={isOpen} onClose={onClose}>
@@ -58,8 +64,10 @@ export function MintSuccessSheet({
           </div>
         </div>
 
-        {frameAdded ? (
-          <div className="mb-8" />
+        {!frameAdded ? (
+          <div className="mb-8 px-4">
+            <Button className="w-full" onClick={handleShare}>Share</Button>
+          </div>
         ) : (
           <div className="relative w-[365px] mx-auto">
             <div className="absolute inset-4 pb-4">
