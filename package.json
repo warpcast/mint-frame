@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@farcaster/frame-sdk": "^0.0.22",
+    "@farcaster/frame-sdk": "^0.0.26",
     "@farcaster/frame-wagmi-connector": "^0.0.6",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
